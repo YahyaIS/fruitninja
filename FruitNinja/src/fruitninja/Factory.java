@@ -28,6 +28,10 @@ public class Factory {
     public void drawObject(GameObject object){
         gc.drawImage(object.getImage(), object.getPosX(), object.getPosY());
     }
+    public void drawHalf(Fruit object){
+        gc.drawImage(object.getImage1(), object.getPosX(), object.getPosY());
+        gc.drawImage(object.getImage2(), object.getPosX(), object.getPosY());
+    }
     
     public void options() {
         gc.setTextAlign(TextAlignment.CENTER);

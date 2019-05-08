@@ -29,7 +29,7 @@ public class RedBomb extends Bombs {
         Random rx= new Random();
         deltaX = 2+rx.nextFloat()*4;
         Random ry= new Random();
-        deltaY = -(8+ry.nextFloat()*8);
+        deltaY = -(8+ry.nextFloat()*4);
         downY=-deltaY;
     }
 
@@ -44,6 +44,8 @@ public class RedBomb extends Bombs {
         return redbomb;
     }
 
+   
+    
 
     
 

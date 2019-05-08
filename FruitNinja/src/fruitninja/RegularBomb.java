@@ -29,7 +29,7 @@ public class RegularBomb extends Bombs{
         Random rx= new Random();
         deltaX = 2+rx.nextFloat()*3;
         Random ry= new Random();
-        deltaY = -(6+ry.nextFloat()*6);
+        deltaY = -(4+ry.nextFloat()*6);
         downY=-deltaY;
     }
 
@@ -43,6 +43,8 @@ public class RegularBomb extends Bombs{
     public Enum getObjectType() {
         return regbomb;
     }
+
+    
 
 
     
