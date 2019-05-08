@@ -11,10 +11,11 @@ public class Factory {
 
     private GraphicsContext gc;
     private Scene scene;
-
+    Menu menu;
     public Factory(GraphicsContext gc,Scene scene) {
         this.gc = gc;
         this.scene = scene;
+        this.menu = new Menu(this, gc,scene);
     }
     
     public void gotoLevel(Level level) {
@@ -28,28 +29,37 @@ public class Factory {
     public void drawObject(GameObject object){
         gc.drawImage(object.getImage(), object.getPosX(), object.getPosY());
     }
+    
     public void drawHalf(Fruit object){
-        gc.drawImage(object.getImage1(), object.getPosX(), object.getPosY());
-        gc.drawImage(object.getImage2(), object.getPosX(), object.getPosY());
+        gc.drawImage(object.getImage1(), object.getHalfX1(), object.getPosY());
+        gc.drawImage(object.getImage2(), object.getHalfX2(), object.getPosY());
+    }
+    
+    public int setScore(Fruit go, int score){
+        score+=go.getPoints();
+        return score;
+    }
+    
+    public void showScore(int score){
+        gc.fillText("Score : "+ score, 70, 15);
     }
     
     public void options() {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFill(Color.BLACK);
-        gc.fillRect(410, 150, 180, 50);
-        gc.fillRect(394, 250, 212, 50);
-        gc.fillRect(410, 350, 180, 50);
+        gc.fillRect(110, 150, 180, 50);
+        gc.fillRect(94, 250, 212, 50);
+        gc.fillRect(110, 350, 180, 50);
         gc.setFill(Color.BURLYWOOD);
         gc.setFont(Font.font(35));
-        gc.fillText("Easy Level", 500, 170);
-        gc.fillText("Medium Level", 500, 270);
-        gc.fillText("Hard Level", 500, 370);
+        gc.fillText("Easy Level", 200, 170);
+        gc.fillText("Medium Level", 200, 270);
+        gc.fillText("Hard Level", 200, 370);
         
     }
 
     public void drawMenu() {
-        Menu menu = new Menu(this, gc,scene);
         menu.Draw();
     }
 
