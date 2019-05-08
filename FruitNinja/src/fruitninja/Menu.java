@@ -24,7 +24,7 @@ public class Menu {
         this.factory = factory;
         this.gc = gc;
         this.scene=scene;
-        el = new EasyLevel(factory);
+        el = new EasyLevel(factory,scene);
         this.rec1 = new Rectangle2D(410, 150, 180, 50);
         this.rec2 = new Rectangle2D(394, 250, 212, 50);
         this.rec3 = new Rectangle2D(410, 350, 180, 50);

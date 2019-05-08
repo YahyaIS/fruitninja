@@ -1,10 +1,14 @@
 
 package fruitninja;
 
+import java.awt.image.BufferedImage;
 import java.util.Random;
+import javafx.geometry.Rectangle2D;
 
 public abstract class Bombs implements GameObject{
 int posX,posY;
+Rectangle2D rec;
+    BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
 
     float deltaX, deltaY , downY;
     float rand;
@@ -13,6 +17,15 @@ int posX,posY;
         posX=(int) (100+r.nextDouble()*800);
         posY=561;
         rand=(float) (100+r.nextDouble()*800);
+    }
+    @Override
+    public void setRec(){
+        rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+    }
+    
+    @Override
+    public Rectangle2D getRec(){
+        return rec;
     }
 
     @Override

@@ -13,13 +13,30 @@ import javax.imageio.ImageIO;
 
 public class Apple extends Fruit{
         private Fruit.fruit apple ;
-    private Rectangle2D rec;
+    
     private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
+    private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
+    private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public Apple() {
         apple =Fruit.fruit.APPLE;
         File input=new File("apple.png");
         try {
             bi= ImageIO.read(input);
+        }
+        catch(IOException ex) {
+            Logger.getLogger(Side.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+        File input1=new File("a1.png");
+        try {
+            bi1= ImageIO.read(input1);
+        }
+        catch(IOException ex) {
+            Logger.getLogger(Side.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        File input2=new File("a2.png");
+        try {
+            bi2= ImageIO.read(input2);
         }
         catch(IOException ex) {
             Logger.getLogger(Side.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -32,6 +49,18 @@ public class Apple extends Fruit{
         Image image = SwingFXUtils.toFXImage(this.bi, null);
         return  image;
     }
+    
+    public javafx.scene.image.Image getImage1(){
+        Image image = SwingFXUtils.toFXImage(this.bi1, null);
+        return  image;
+    }
+    
+    public javafx.scene.image.Image getImage2(){
+        Image image = SwingFXUtils.toFXImage(this.bi2, null);
+        return  image;
+    }
+    
+    
     @Override
     public Enum getObjectType() {
         return apple;

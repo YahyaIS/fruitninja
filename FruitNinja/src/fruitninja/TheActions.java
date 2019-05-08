@@ -9,23 +9,30 @@ public class TheActions implements GameActions {
     @Override
     public GameObject createGameObject() {
         Random r = new Random();
-        int i = (int) (r.nextDouble() * 5);
-        if (i == 0) {
+        int i = (int) (r.nextDouble() * 11);
+        if (i <= 2) {
             Fruit melon = new Melon();
             return melon;
-        } else if (i == 1) {
+        } else if (i <= 4) {
             Fruit banana = new Banana();
             return banana;
-        } else if (i == 2) {
+        } else if (i <= 6) {
             Fruit apple = new Apple();
             return apple;
-        } else if (i == 3) {
+        } else if (i <= 7) {
             Bombs redBomb = new RedBomb();
             return redBomb;
-        } else if (i >= 4) {
+        } else if (i <= 9) {
             Bombs regBomb = new RegularBomb();
             return regBomb;
-        } else {
+        }else if (i <= 10){
+            SuperFruit1 superFruit1 = new SuperFruit1();
+            return superFruit1;
+        }else if(i <=11){
+            SuperFruit2 superFruit2 = new SuperFruit2();
+            return superFruit2;
+        }
+        else {
             return null;
         }
     }
@@ -34,6 +41,7 @@ public class TheActions implements GameActions {
     public void updateObjectPlace(GameObject go) {
         go.setPosX(go.getDeltaX());
         go.setPosY(go.getDeltaY());
+        go.setRec();
     }
 
     @Override
