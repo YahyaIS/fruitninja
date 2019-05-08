@@ -9,7 +9,7 @@ public class TheActions implements GameActions {
     @Override
     public GameObject createGameObject() {
         Random r = new Random();
-        int i = (int) (r.nextDouble() * 11);
+        int i = (int) (1+r.nextDouble() * 12);
         if (i <= 2) {
             Fruit melon = new Melon();
             return melon;
@@ -19,16 +19,18 @@ public class TheActions implements GameActions {
         } else if (i <= 6) {
             Fruit apple = new Apple();
             return apple;
-        } else if (i <= 7) {
+        } else 
+            if (i <= 7) {
             Bombs redBomb = new RedBomb();
             return redBomb;
-        } else if (i <= 9) {
+        } else 
+                if (i <= 9) {
             Bombs regBomb = new RegularBomb();
             return regBomb;
         }else if (i <= 10){
             SuperFruit1 superFruit1 = new SuperFruit1();
             return superFruit1;
-        }else if(i <=11){
+        }else if(i <=12){
             SuperFruit2 superFruit2 = new SuperFruit2();
             return superFruit2;
         }
@@ -45,10 +47,12 @@ public class TheActions implements GameActions {
     }
 
     @Override
-    public void sliceObjects() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateHalf(Fruit go) {
+        go.setPosY(go.getDeltaY());
+        go.setHalfX1(-go.getDeltaX());
+        go.setHalfX2(go.getDeltaX());
     }
-
+    
     public float getDeltaX() {
         return deltaX;
     }

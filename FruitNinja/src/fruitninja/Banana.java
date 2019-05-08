@@ -18,6 +18,7 @@ public class Banana extends Fruit{
     private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public Banana() {
+        points=1;
         banana =fruit.BANANA;
         File input=new File("banana.png");
         try {
@@ -34,7 +35,7 @@ public class Banana extends Fruit{
         catch(IOException ex) {
             Logger.getLogger(Side.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        File input2=new File("b1.png");
+        File input2=new File("b2.png");
         try {
             bi2= ImageIO.read(input2);
         }

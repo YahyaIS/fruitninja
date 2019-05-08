@@ -18,6 +18,7 @@ public class Apple extends Fruit{
     private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public Apple() {
+        points=1;
         apple =Fruit.fruit.APPLE;
         File input=new File("apple.png");
         try {

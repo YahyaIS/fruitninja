@@ -8,6 +8,7 @@ package fruitninja;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
@@ -21,11 +22,14 @@ import javax.imageio.ImageIO;
  */
 public class SuperFruit2 extends Fruit{
     private Fruit.fruit superFruit ;
-    
     private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public SuperFruit2() {
+        points=4;
+        Random ry = new Random();
+        deltaY = -(8 + ry.nextFloat() * 10);
+        downY = -deltaY;
         superFruit =Fruit.fruit.SUPERFRUIT;
         File input=new File("s2.png");
         try {
@@ -58,16 +62,17 @@ public class SuperFruit2 extends Fruit{
         return  image;
     }
     
+    @Override
     public javafx.scene.image.Image getImage1(){
         Image image = SwingFXUtils.toFXImage(this.bi1, null);
         return  image;
     }
     
+    @Override
     public javafx.scene.image.Image getImage2(){
         Image image = SwingFXUtils.toFXImage(this.bi2, null);
         return  image;
     }
-    
     
     @Override
     public Enum getObjectType() {
