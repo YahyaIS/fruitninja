@@ -1,7 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package fruitninja;
 
-import fruitninja.Bombs.bomb;
-import fruitninja.Fruit.fruit;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
@@ -9,8 +12,11 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
-public class EasyLevel implements Level {
-
+/**
+ *
+ * @author seif
+ */
+public class HardLevel implements Level{
     private Factory factory;
     private GameActions actions;
     private List<GameObject> objects = new ArrayList<>();
@@ -21,16 +27,18 @@ public class EasyLevel implements Level {
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
+    private GameObject go3;
+    private GameObject go4;
     private Scene scene;
     
     private int score, lives;
 
-    public EasyLevel(Factory factory, Scene scene) {
+    public HardLevel(Factory factory, Scene scene) {
         this.lives = 3;
         this.score = 0;
-        this.flag = new boolean[3];
-        this.s = new boolean[3];
-        this.f = new boolean[3];
+        this.flag = new boolean[5];
+        this.s = new boolean[5];
+        this.f = new boolean[5];
         this.actions = new TheActions();
         this.factory = factory;
         this.scene = scene;
@@ -39,7 +47,6 @@ public class EasyLevel implements Level {
     @Override
     public void manageLevel() {
         initGame();
-        factory.media();
         new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -61,9 +68,13 @@ public class EasyLevel implements Level {
                 objectMotion(go, 0);
                 objectMotion(go1, 1);
                 objectMotion(go2, 2);
+                objectMotion(go3, 3);
+                objectMotion(go4, 4);
                 go = checkEnd(go, 0);
                 go1 = checkEnd(go1, 1);
                 go2 = checkEnd(go2, 2);
+                go3 = checkEnd(go3, 3);
+                go4 = checkEnd(go4, 4);
                 
                 scene.setOnMouseClicked(
                         (EventHandler<MouseEvent>) e -> {
@@ -76,7 +87,14 @@ public class EasyLevel implements Level {
                             } else if (go2.getRec().contains(e.getX(), e.getY())) {
                                 objects.remove(go2);
                                 s[2] = true;
+                            }else if (go3.getRec().contains(e.getX(), e.getY())) {
+                                objects.remove(go3);
+                                s[3] = true;
+                            }else if (go4.getRec().contains(e.getX(), e.getY())) {
+                                objects.remove(go4);
+                                s[4] = true;
                             }
+                            
                         });
 
             }
@@ -93,14 +111,14 @@ public class EasyLevel implements Level {
             actions.updateObjectPlace(go);
             factory.drawObject(go);
         } else if (s[i] == true) {
-            if (go.getObjectType() != bomb.DEADLY && go.getObjectType() != bomb.NORM) {
+            if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
                 if (f[i] == false) {
                     score = factory.setScore((Fruit) go, score);
                     f[i] = true;
                 }
                 actions.updateHalf((Fruit) go);
                 factory.drawHalf((Fruit) go);
-            } else if (go.getObjectType() == bomb.NORM) {
+            } else if (go.getObjectType() == Bombs.bomb.NORM) {
                 if (f[i] == false) {
                     lives--;
                     go.setPosY(563);
@@ -108,7 +126,7 @@ public class EasyLevel implements Level {
                     
                 }
                 actions.updateObjectPlace(go);
-            } else if (go.getObjectType() == bomb.DEADLY) {
+            } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
                 factory.drawMenu();
             }
         }
@@ -116,8 +134,8 @@ public class EasyLevel implements Level {
 
     public GameObject checkEnd(GameObject go, int i) {
         if (go.getPosY() > 562 ) {
-            if(s[i] == false&&(go.getObjectType() == fruit.APPLE ||go.getObjectType() == fruit.BANANA
-                    || go.getObjectType() == fruit.MELON)){
+            if(s[i] == false&&(go.getObjectType() == Fruit.fruit.APPLE ||go.getObjectType() == Fruit.fruit.BANANA
+                    || go.getObjectType() == Fruit.fruit.MELON)){
             lives--;
             }
             flag[i] = false;
@@ -134,15 +152,19 @@ public class EasyLevel implements Level {
     }
 
     public void initGame() {
+        this.go4 = actions.createGameObject();
+        this.go3 = actions.createGameObject();
         this.go2 = actions.createGameObject();
         this.go1 = actions.createGameObject();
         this.go = actions.createGameObject();
         objects.add(go);
         objects.add(go1);
         objects.add(go2);
+        objects.add(go3);
+        objects.add(go4);
         score = 0;
         lives = 3;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             this.flag[i] = false;
             this.s[i] = false;
             this.f[i] = false;
@@ -160,9 +182,11 @@ public class EasyLevel implements Level {
     public GameObject getGo2() {
         return go2;
     }
+    public GameObject getGo3() {
+        return go3;
+    }
 
     public void setLives(int lives) {
         this.lives = lives;
     }
-
 }
