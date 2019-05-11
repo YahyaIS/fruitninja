@@ -4,24 +4,22 @@ import fruitninja.Bombs.bomb;
 import fruitninja.Fruit.fruit;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
 public class EasyLevel implements Level {
 
-    private Factory factory;
-    private GameActions actions;
+    private final Factory factory;
+    private final GameActions actions;
     private List<GameObject> objects = new ArrayList<>();
     private boolean[] flag;
     private boolean[] s;
     private boolean[] f;
-    int x, y;
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
-    private Scene scene;
+    private final Scene scene;
 
     private int score, lives;
 
@@ -56,8 +54,7 @@ public class EasyLevel implements Level {
         go = checkEnd(go, 0);
         go1 = checkEnd(go1, 1);
         go2 = checkEnd(go2, 2);
-
-        scene.setOnMouseClicked(
+        scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go);
@@ -98,7 +95,7 @@ public class EasyLevel implements Level {
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == bomb.DEADLY) {
-                lives=0;
+                lives = 0;
             }
         }
     }

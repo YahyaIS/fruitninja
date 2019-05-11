@@ -7,7 +7,6 @@ package fruitninja;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -68,8 +67,8 @@ public class MediumLevel implements Level {
         go2 = checkEnd(go2, 2);
         go3 = checkEnd(go3, 3);
 
-        scene.setOnMouseClicked(
-                (EventHandler<MouseEvent>) (MouseEvent e) -> {
+        scene.setOnMouseDragged(
+                (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go);
                         s[0] = true;

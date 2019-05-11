@@ -47,20 +47,24 @@ public class Factory {
             @Override
             public void handle(long l) {
                 if (state == 0) {
+                    menu.setRecs();
                     drawMenu();
                 } else if (state == 1) {
+                    menu.removeRecs();
                     if(!first){
                         el.initGame();
                         first=true;
                     }
                     gotoLevel(el);
                 } else if (state == 2) {
+                    menu.removeRecs();
                     if(!first){
                         ml.initGame();
                         first=true;
                     }
                     gotoLevel(ml);
                 } else if (state == 3) {
+                    menu.removeRecs();
                     if(!first){
                         hl.initGame();
                         first=true;
