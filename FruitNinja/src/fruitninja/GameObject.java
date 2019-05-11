@@ -5,8 +5,7 @@ import javafx.geometry.Rectangle2D;
 
 public interface GameObject {
     public Enum getObjectType();
-    public javafx.scene.image.Image getImage();
-    
+    public javafx.scene.image.Image getImage();  
     public void setPosX(float x);
     public void setPosY(float y);
     public int getDownY();

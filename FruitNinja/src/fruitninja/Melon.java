@@ -18,6 +18,7 @@ public class Melon extends Fruit{
     private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     
     public Melon() {
+        points=1;
         melon =fruit.MELON;
         File input=new File("melon.png");
         try {
