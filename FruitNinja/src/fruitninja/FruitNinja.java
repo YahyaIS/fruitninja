@@ -16,7 +16,7 @@ public class FruitNinja extends Application{
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("River crosing puzzle");
+        stage.setTitle("Fruit Ninja");
         Canvas canvas = new Canvas(1000, 562);
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -24,7 +24,7 @@ public class FruitNinja extends Application{
         root.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Factory factory= new Factory(gc,scene);
-        factory.drawMenu();
+        factory.gameState();
         stage.show();    
     }
     
