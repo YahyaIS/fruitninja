@@ -49,4 +49,16 @@ public class Menu {
 
             
     }
+    
+    public void setRecs(){
+        this.rec1 = new Rectangle2D(110, 150, 180, 50);
+        this.rec2 = new Rectangle2D(94, 250, 212, 50);
+        this.rec3 = new Rectangle2D(110, 350, 180, 50);
+    }
+    
+    public void removeRecs(){
+        this.rec1 = new Rectangle2D(1000, 150, 180, 50);
+        this.rec2 = new Rectangle2D(1000, 250, 212, 50);
+        this.rec3 = new Rectangle2D(1000, 350, 180, 50);
+    }
 }

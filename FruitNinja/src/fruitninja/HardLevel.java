@@ -18,19 +18,18 @@ import javafx.scene.input.MouseEvent;
  */
 public class HardLevel implements Level {
 
-    private Factory factory;
-    private GameActions actions;
+    private final Factory factory;
+    private final GameActions actions;
     private List<GameObject> objects = new ArrayList<>();
     private boolean[] flag;
     private boolean[] s;
     private boolean[] f;
-    int x, y;
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
     private GameObject go3;
     private GameObject go4;
-    private Scene scene;
+    private final Scene scene;
 
     private int score, lives;
 
@@ -72,7 +71,7 @@ public class HardLevel implements Level {
         go3 = checkEnd(go3, 3);
         go4 = checkEnd(go4, 4);
 
-        scene.setOnMouseClicked(
+        scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go);
