@@ -7,19 +7,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.TextAlignment;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 public class Factory {
 
-    private final String uriString;
+    private final String uriString ,sliString ,bombString,redString;
     private final MediaPlayer player;
+    private  MediaPlayer sliceSound;
     private final GraphicsContext gc;
     private final Scene scene;
     private final Menu menu;
@@ -29,11 +25,14 @@ public class Factory {
     private final MediumLevel ml;
     private final HardLevel hl;
     private boolean first;
-    private int seconds=0;
-    private Complete complete; 
+    //private int seconds=0;
+    private final Complete complete; 
     public Factory(GraphicsContext gc, Scene scene) {
         this.state = 0;
         this.uriString = new File("roc.mp3").toURI().toString();
+        this.sliString = new File("sword.mp3").toURI().toString();
+        this.redString = new File("explode.mp3").toURI().toString();
+        this.bombString = new File("explode2.mp3").toURI().toString();
         this.player = new MediaPlayer(new Media(uriString));
         this.gc = gc;
         this.scene = scene;
@@ -47,6 +46,21 @@ public class Factory {
 
     public void media() {
         player.play();
+    }
+    
+    public void redSound(){
+        this.sliceSound = new MediaPlayer(new Media(redString));
+        sliceSound.play();
+    }
+    
+    public void bombSound(){
+        this.sliceSound = new MediaPlayer(new Media(bombString));
+        sliceSound.play();
+    }
+    
+    public void swordSound(){
+        this.sliceSound = new MediaPlayer(new Media(sliString));
+        sliceSound.play();
     }
     
     
@@ -148,10 +162,11 @@ public class Factory {
     }
 
     public void showScore(int score) {
+        gc.setFill(Color.BLACK);
         gc.fillText("Score : " + score, 70, 15);
     }
     
-    public void drawW(){
+    public void drawW(Level level){
         gc.drawImage(complete.getWImage(), 300, 125);
         gc.drawImage(complete.getRImage(), 610, 315);
         gc.drawImage(complete.getBImage(), 325, 315);
@@ -159,6 +174,7 @@ public class Factory {
         gc.setTextBaseline(VPos.CENTER);
         gc.setFill(Color.RED);
         gc.fillText("You Lost!", 500, 180);
+        gc.fillText("Score :" + level.getScore(), 505, 220);
     }
 
     public void options() {
