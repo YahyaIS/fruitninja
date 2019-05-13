@@ -29,6 +29,8 @@ public class MediumLevel implements Level {
     private GameObject go3;
     private final Scene scene;
     private int score, lives;
+    private final Complete complete;
+    private boolean w=false;
 
     public MediumLevel(Factory factory, Scene scene) {
         this.lives = 3;
@@ -39,6 +41,7 @@ public class MediumLevel implements Level {
         this.actions = new TheActions();
         this.factory = factory;
         this.scene = scene;
+        this.complete = new Complete();
     }
 
     @Override
@@ -49,6 +52,10 @@ public class MediumLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
+        
+         if(w){
+            factory.drawW();
+        }
 
         if (lives == 2) {
             factory.drawRx(940, 25);
@@ -83,6 +90,16 @@ public class MediumLevel implements Level {
                         s[3] = true;
                     }
                 });
+        scene.setOnMouseClicked(
+                        (EventHandler<MouseEvent>) e -> {
+                    if (complete.getRec1().contains(e.getX(), e.getY())) {
+                        factory.setState(0);
+                    } else if (complete.getRec2().contains(e.getX(), e.getY())) {
+                        factory.setState(2);
+                        initGame();             
+                    }
+                        });
+
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -130,7 +147,7 @@ public class MediumLevel implements Level {
             f[i] = false;
         }
         if (lives == 0) {
-            factory.setState(0);
+            w=true;
         }
         return go;
     }
@@ -146,6 +163,7 @@ public class MediumLevel implements Level {
         objects.add(go3);
         score = 0;
         lives = 3;
+        w=false;
         for (int i = 0; i < 4; i++) {
             this.flag[i] = false;
             this.s[i] = false;

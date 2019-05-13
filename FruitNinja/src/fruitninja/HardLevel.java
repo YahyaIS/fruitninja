@@ -30,6 +30,8 @@ public class HardLevel implements Level {
     private GameObject go3;
     private GameObject go4;
     private final Scene scene;
+    private final Complete complete;
+    private boolean w=false;
 
     private int score, lives;
 
@@ -42,6 +44,7 @@ public class HardLevel implements Level {
         this.actions = new TheActions();
         this.factory = factory;
         this.scene = scene;
+        this.complete = new Complete();
     }
 
     @Override
@@ -52,6 +55,10 @@ public class HardLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
+        
+         if(w){
+            factory.drawW();
+        }
         if (lives == 2) {
             factory.drawRx(940, 25);
 
@@ -91,6 +98,15 @@ public class HardLevel implements Level {
                     }
 
                 });
+        scene.setOnMouseClicked(
+                        (EventHandler<MouseEvent>) e -> {
+                    if (complete.getRec1().contains(e.getX(), e.getY())) {
+                        factory.setState(0);
+                    } else if (complete.getRec2().contains(e.getX(), e.getY())) {
+                        factory.setState(3);
+                        initGame();             
+                    }
+                        });
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -100,8 +116,11 @@ public class HardLevel implements Level {
             flag[i] = true;
         }
         if (s[i] == false) {
+            
             actions.updateObjectPlace(go);
+       
             factory.drawObject(go);
+             
         } else if (s[i] == true) {
             if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
                 if (f[i] == false) {
@@ -131,14 +150,16 @@ public class HardLevel implements Level {
                 lives--;
             }
             flag[i] = false;
-            objects.remove(go);
+            objects.remove(go);            
+            if(!w){
             go = actions.createGameObject();
+            }
             objects.add(go);
             s[i] = false;
             f[i] = false;
         }
         if (lives == 0) {
-            factory.setState(0);
+            w=true;
         }
         return go;
     }
@@ -154,6 +175,7 @@ public class HardLevel implements Level {
         objects.add(go2);
         objects.add(go3);
         objects.add(go4);
+         w=false;
         score = 0;
         lives = 3;
         for (int i = 0; i < 5; i++) {

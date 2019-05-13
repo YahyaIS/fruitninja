@@ -3,13 +3,18 @@ package fruitninja;
 import java.io.File;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.TextAlignment;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 public class Factory {
 
@@ -24,6 +29,8 @@ public class Factory {
     private final MediumLevel ml;
     private final HardLevel hl;
     private boolean first;
+    private int seconds=0;
+    private Complete complete; 
     public Factory(GraphicsContext gc, Scene scene) {
         this.state = 0;
         this.uriString = new File("roc.mp3").toURI().toString();
@@ -31,6 +38,7 @@ public class Factory {
         this.gc = gc;
         this.scene = scene;
         this.menu = new Menu(this, gc, scene);
+        this.complete = new Complete();
         this.warnning = new Warnning();
         el = new EasyLevel(this, scene);
         ml = new MediumLevel(this, scene);
@@ -40,6 +48,36 @@ public class Factory {
     public void media() {
         player.play();
     }
+    
+    
+//    public void doTime() {
+//  Timeline time= new Timeline();
+//  
+//  
+// KeyFrame frame= new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+//     
+//   @Override
+//   public void handle(ActionEvent event) {
+//     gc.setTextAlign(TextAlignment.CENTER);
+//     gc.setTextBaseline(VPos.CENTER);
+//     gc.setFill(Color.BLACK);
+//     gc.setFont(Font.font(35));
+//       System.out.println(seconds);
+//     gc.fillText(""+seconds, 500, 170);
+//    seconds++;
+//    
+//   }
+//  });
+//  
+//  time.setCycleCount(Timeline.INDEFINITE);
+//  time.getKeyFrames().add(frame);
+//  if(time!=null){
+//   time.stop();
+//  }
+//  time.play();
+//  
+// }
+     
 
     public void gameState() {
         media();
@@ -111,6 +149,16 @@ public class Factory {
 
     public void showScore(int score) {
         gc.fillText("Score : " + score, 70, 15);
+    }
+    
+    public void drawW(){
+        gc.drawImage(complete.getWImage(), 300, 125);
+        gc.drawImage(complete.getRImage(), 610, 315);
+        gc.drawImage(complete.getBImage(), 325, 315);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFill(Color.RED);
+        gc.fillText("You Lost!", 500, 180);
     }
 
     public void options() {

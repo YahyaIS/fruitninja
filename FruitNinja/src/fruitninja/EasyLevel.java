@@ -16,10 +16,12 @@ public class EasyLevel implements Level {
     private boolean[] flag;
     private boolean[] s;
     private boolean[] f;
+    private boolean w=false;
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
     private final Scene scene;
+    private final Complete complete; 
 
     private int score, lives;
 
@@ -31,6 +33,7 @@ public class EasyLevel implements Level {
         this.f = new boolean[3];
         this.actions = new TheActions();
         this.factory = factory;
+        this.complete = new Complete();
         this.scene = scene;
     }
 
@@ -42,6 +45,12 @@ public class EasyLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
+        
+        if(w){
+            factory.drawW();
+        }
+      
+        
         if (lives == 2) {
             factory.drawRx(940, 25);
         } else if (lives == 1) {
@@ -65,8 +74,18 @@ public class EasyLevel implements Level {
                     } else if (go2.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go2);
                         s[2] = true;
-                    }
+                    } 
                 });
+        scene.setOnMouseClicked(
+                        (EventHandler<MouseEvent>) e -> {
+                    if (complete.getRec1().contains(e.getX(), e.getY())) {
+                        factory.setState(0);
+                    } else if (complete.getRec2().contains(e.getX(), e.getY())) {
+                        factory.setState(1);
+                        initGame();             
+                    }
+                        });
+
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -115,7 +134,9 @@ public class EasyLevel implements Level {
         }
 
         if (lives == 0) {
-            factory.setState(0);
+           
+            w=true;
+            
         }
         return go;
     }
@@ -129,12 +150,16 @@ public class EasyLevel implements Level {
         objects.add(go2);
         score = 0;
         lives = 3;
+        w=false;
         for (int i = 0; i < 3; i++) {
             this.flag[i] = false;
             this.s[i] = false;
             this.f[i] = false;
         }
     }
+    
+    
+    
 
     public GameObject getGo() {
         return go;
