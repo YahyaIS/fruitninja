@@ -42,7 +42,7 @@ public class Banana extends Fruit{
         catch(IOException ex) {
             Logger.getLogger(Side.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        this.rec = new Rectangle2D(posX,posY,bi.getWidth(),bi.getHeight());
+        
     }
 
     @Override
