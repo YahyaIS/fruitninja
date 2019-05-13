@@ -30,7 +30,6 @@ public class MediumLevel implements Level {
     private final Scene scene;
     private int score, lives;
     private final Complete complete;
-    private boolean w=false;
 
     public MediumLevel(Factory factory, Scene scene) {
         this.lives = 3;
@@ -53,9 +52,6 @@ public class MediumLevel implements Level {
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
         
-         if(w){
-            factory.drawW();
-        }
 
         if (lives == 2) {
             factory.drawRx(940, 25);
@@ -63,7 +59,15 @@ public class MediumLevel implements Level {
         } else if (lives == 1) {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
+        }else if(lives ==0){
+            factory.drawRx(940, 25);
+            factory.drawRx(860, 25);
+            factory.drawRx(780, 25);
+            complete.setRec1();
+            complete.setRec2();
+            factory.drawW(this);
         }
+        if(lives>0){
 
         objectMotion(go, 0);
         objectMotion(go1, 1);
@@ -73,7 +77,7 @@ public class MediumLevel implements Level {
         go1 = checkEnd(go1, 1);
         go2 = checkEnd(go2, 2);
         go3 = checkEnd(go3, 3);
-
+        }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
@@ -114,12 +118,14 @@ public class MediumLevel implements Level {
         } else if (s[i] == true) {
             if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
                 if (f[i] == false) {
+                    factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
                     f[i] = true;
                 }
                 actions.updateHalf((Fruit) go);
                 factory.drawHalf((Fruit) go);
             } else if (go.getObjectType() == Bombs.bomb.NORM) {
+                factory.bombSound();
                 if (f[i] == false) {
                     lives--;
                     go.setPosY(563);
@@ -128,6 +134,7 @@ public class MediumLevel implements Level {
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
+                factory.redSound();
                 lives=0;
             }
         }
@@ -146,9 +153,6 @@ public class MediumLevel implements Level {
             s[i] = false;
             f[i] = false;
         }
-        if (lives == 0) {
-            w=true;
-        }
         return go;
     }
 
@@ -163,7 +167,7 @@ public class MediumLevel implements Level {
         objects.add(go3);
         score = 0;
         lives = 3;
-        w=false;
+        complete.removeRecs();
         for (int i = 0; i < 4; i++) {
             this.flag[i] = false;
             this.s[i] = false;
@@ -171,6 +175,11 @@ public class MediumLevel implements Level {
         }
     }
 
+    @Override
+    public int getScore(){
+       return score ;
+    }
+    
     public GameObject getGo() {
         return go;
     }

@@ -72,6 +72,19 @@ public class Complete {
         return  image;
     }
 
+    public void setRec1() {
+        rec1 = new Rectangle2D(325,315,bb.getWidth(),bb.getHeight());
+    }
+
+    public void setRec2() {
+        rec2 = new Rectangle2D(610,315,br.getWidth(),br.getHeight());
+    }
+
+    public void removeRecs(){
+        rec1 = new Rectangle2D(1000,315,bb.getWidth(),bb.getHeight());
+        rec2 = new Rectangle2D(1000,315,br.getWidth(),br.getHeight());
+    }
+    
     public Rectangle2D getRec1() {
         return rec1;
     }

@@ -1,7 +1,6 @@
 
 package fruitninja;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -13,10 +12,6 @@ import javax.imageio.ImageIO;
 
 public class Banana extends Fruit{
         private fruit banana ;
-    
-    private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
-    private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
-    private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public Banana() {
         points=1;
         banana =fruit.BANANA;

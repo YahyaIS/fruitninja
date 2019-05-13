@@ -16,7 +16,6 @@ public class EasyLevel implements Level {
     private boolean[] flag;
     private boolean[] s;
     private boolean[] f;
-    private boolean w=false;
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
@@ -46,32 +45,37 @@ public class EasyLevel implements Level {
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
         
-        if(w){
-            factory.drawW();
-        }
-      
-        
         if (lives == 2) {
             factory.drawRx(940, 25);
         } else if (lives == 1) {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
+        } else if(lives ==0){
+            factory.drawRx(940, 25);
+            factory.drawRx(860, 25);
+            factory.drawRx(780, 25);
+            complete.setRec1();
+            complete.setRec2();
+            factory.drawW(this);
         }
+        if(lives>0){
         objectMotion(go, 0);
         objectMotion(go1, 1);
         objectMotion(go2, 2);
+        
         go = checkEnd(go, 0);
         go1 = checkEnd(go1, 1);
         go2 = checkEnd(go2, 2);
+        }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go);
                         s[0] = true;
-                    } else if (go1.getRec().contains(e.getX(), e.getY())) {
+                    }  if (go1.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go1);
                         s[1] = true;
-                    } else if (go2.getRec().contains(e.getX(), e.getY())) {
+                    }  if (go2.getRec().contains(e.getX(), e.getY())) {
                         objects.remove(go2);
                         s[2] = true;
                     } 
@@ -85,7 +89,6 @@ public class EasyLevel implements Level {
                         initGame();             
                     }
                         });
-
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -100,6 +103,7 @@ public class EasyLevel implements Level {
         } else if (s[i] == true) {
             if (go.getObjectType() != bomb.DEADLY && go.getObjectType() != bomb.NORM) {
                 if (f[i] == false) {
+                    factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
                     f[i] = true;
                 }
@@ -107,6 +111,7 @@ public class EasyLevel implements Level {
                 factory.drawHalf((Fruit) go);
             } else if (go.getObjectType() == bomb.NORM) {
                 if (f[i] == false) {
+                    factory.bombSound();
                     lives--;
                     go.setPosY(563);
                     f[i] = true;
@@ -114,6 +119,7 @@ public class EasyLevel implements Level {
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == bomb.DEADLY) {
+                factory.redSound();
                 lives = 0;
             }
         }
@@ -132,12 +138,6 @@ public class EasyLevel implements Level {
             s[i] = false;
             f[i] = false;
         }
-
-        if (lives == 0) {
-           
-            w=true;
-            
-        }
         return go;
     }
 
@@ -150,7 +150,7 @@ public class EasyLevel implements Level {
         objects.add(go2);
         score = 0;
         lives = 3;
-        w=false;
+        complete.removeRecs();
         for (int i = 0; i < 3; i++) {
             this.flag[i] = false;
             this.s[i] = false;
@@ -158,7 +158,10 @@ public class EasyLevel implements Level {
         }
     }
     
-    
+    @Override
+    public int getScore(){
+       return score ;
+    }
     
 
     public GameObject getGo() {

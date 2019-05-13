@@ -7,7 +7,6 @@ package fruitninja;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -31,8 +30,6 @@ public class HardLevel implements Level {
     private GameObject go4;
     private final Scene scene;
     private final Complete complete;
-    private boolean w=false;
-
     private int score, lives;
 
     public HardLevel(Factory factory, Scene scene) {
@@ -55,29 +52,33 @@ public class HardLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-        
-         if(w){
-            factory.drawW();
-        }
+
         if (lives == 2) {
             factory.drawRx(940, 25);
 
         } else if (lives == 1) {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
+        } else if (lives == 0) {
+            factory.drawRx(940, 25);
+            factory.drawRx(860, 25);
+            factory.drawRx(780, 25);
+            complete.setRec1();
+            complete.setRec2();
+            factory.drawW(this);
         }
-
-        objectMotion(go, 0);
-        objectMotion(go1, 1);
-        objectMotion(go2, 2);
-        objectMotion(go3, 3);
-        objectMotion(go4, 4);
-        go = checkEnd(go, 0);
-        go1 = checkEnd(go1, 1);
-        go2 = checkEnd(go2, 2);
-        go3 = checkEnd(go3, 3);
-        go4 = checkEnd(go4, 4);
-
+        if (lives > 0) {
+            objectMotion(go, 0);
+            objectMotion(go1, 1);
+            objectMotion(go2, 2);
+            objectMotion(go3, 3);
+            objectMotion(go4, 4);
+            go = checkEnd(go, 0);
+            go1 = checkEnd(go1, 1);
+            go2 = checkEnd(go2, 2);
+            go3 = checkEnd(go3, 3);
+            go4 = checkEnd(go4, 4);
+        }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
@@ -96,17 +97,16 @@ public class HardLevel implements Level {
                         objects.remove(go4);
                         s[4] = true;
                     }
-
                 });
         scene.setOnMouseClicked(
-                        (EventHandler<MouseEvent>) e -> {
+                (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(3);
-                        initGame();             
+                        initGame();
                     }
-                        });
+                });
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -116,14 +116,13 @@ public class HardLevel implements Level {
             flag[i] = true;
         }
         if (s[i] == false) {
-            
             actions.updateObjectPlace(go);
-       
             factory.drawObject(go);
-             
+
         } else if (s[i] == true) {
             if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
                 if (f[i] == false) {
+                    factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
                     f[i] = true;
                 }
@@ -131,6 +130,7 @@ public class HardLevel implements Level {
                 factory.drawHalf((Fruit) go);
             } else if (go.getObjectType() == Bombs.bomb.NORM) {
                 if (f[i] == false) {
+                    factory.bombSound();
                     lives--;
                     go.setPosY(563);
                     f[i] = true;
@@ -138,7 +138,8 @@ public class HardLevel implements Level {
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
-                lives=0;
+                factory.redSound();
+                lives = 0;
             }
         }
     }
@@ -150,16 +151,11 @@ public class HardLevel implements Level {
                 lives--;
             }
             flag[i] = false;
-            objects.remove(go);            
-            if(!w){
+            objects.remove(go);
             go = actions.createGameObject();
-            }
             objects.add(go);
             s[i] = false;
             f[i] = false;
-        }
-        if (lives == 0) {
-            w=true;
         }
         return go;
     }
@@ -175,9 +171,9 @@ public class HardLevel implements Level {
         objects.add(go2);
         objects.add(go3);
         objects.add(go4);
-         w=false;
         score = 0;
         lives = 3;
+        complete.removeRecs();
         for (int i = 0; i < 5; i++) {
             this.flag[i] = false;
             this.s[i] = false;
@@ -185,6 +181,11 @@ public class HardLevel implements Level {
         }
     }
 
+    @Override
+    public int getScore(){
+       return score ;
+    }
+    
     public GameObject getGo() {
         return go;
     }
