@@ -14,9 +14,6 @@ import javax.imageio.ImageIO;
 public class RedBomb extends Bombs {
 
     private bomb redbomb;
-    private Rectangle2D rec;
-    private BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
-
     public RedBomb() {
         redbomb = bomb.DEADLY;
         File input = new File("redbomb.png");
@@ -43,10 +40,4 @@ public class RedBomb extends Bombs {
     public Enum getObjectType() {
         return redbomb;
     }
-
-   
-    
-
-    
-
 }

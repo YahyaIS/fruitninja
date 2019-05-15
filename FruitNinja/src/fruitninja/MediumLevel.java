@@ -5,8 +5,6 @@
  */
 package fruitninja;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +17,6 @@ public class MediumLevel implements Level {
 
     private final Factory factory;
     private final GameActions actions;
-    private List<GameObject> objects = new ArrayList<>();
     private boolean[] flag;
     private boolean[] s;
     private boolean[] f;
@@ -28,9 +25,8 @@ public class MediumLevel implements Level {
     private GameObject go2;
     private GameObject go3;
     private final Scene scene;
-    private int score, lives;
+    private int score, lives, time;
     private final Complete complete;
-    private boolean w=false;
 
     public MediumLevel(Factory factory, Scene scene) {
         this.lives = 3;
@@ -52,10 +48,6 @@ public class MediumLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-        
-         if(w){
-            factory.drawW();
-        }
 
         if (lives == 2) {
             factory.drawRx(940, 25);
@@ -63,42 +55,47 @@ public class MediumLevel implements Level {
         } else if (lives == 1) {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
+        } else if (lives == 0) {
+            factory.drawRx(940, 25);
+            factory.drawRx(860, 25);
+            factory.drawRx(780, 25);
+            complete.setRec1();
+            complete.setRec2();
+            factory.drawW(this);
         }
-
-        objectMotion(go, 0);
-        objectMotion(go1, 1);
-        objectMotion(go2, 2);
-        objectMotion(go3, 3);
-        go = checkEnd(go, 0);
-        go1 = checkEnd(go1, 1);
-        go2 = checkEnd(go2, 2);
-        go3 = checkEnd(go3, 3);
-
+        if (lives > 0) {
+            factory.showTime();
+            time = factory.getSeconds();
+            objectMotion(go, 0);
+            objectMotion(go1, 1);
+            objectMotion(go2, 2);
+            objectMotion(go3, 3);
+            go = checkEnd(go, 0);
+            go1 = checkEnd(go1, 1);
+            go2 = checkEnd(go2, 2);
+            go3 = checkEnd(go3, 3);
+        }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
                     if (go.getRec().contains(e.getX(), e.getY())) {
-                        objects.remove(go);
                         s[0] = true;
                     } else if (go1.getRec().contains(e.getX(), e.getY())) {
-                        objects.remove(go1);
                         s[1] = true;
                     } else if (go2.getRec().contains(e.getX(), e.getY())) {
-                        objects.remove(go2);
                         s[2] = true;
                     } else if (go3.getRec().contains(e.getX(), e.getY())) {
-                        objects.remove(go3);
                         s[3] = true;
                     }
                 });
         scene.setOnMouseClicked(
-                        (EventHandler<MouseEvent>) e -> {
+                (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(2);
-                        initGame();             
+                        initGame();
                     }
-                        });
+                });
 
     }
 
@@ -114,12 +111,14 @@ public class MediumLevel implements Level {
         } else if (s[i] == true) {
             if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
                 if (f[i] == false) {
+                    factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
                     f[i] = true;
                 }
                 actions.updateHalf((Fruit) go);
                 factory.drawHalf((Fruit) go);
             } else if (go.getObjectType() == Bombs.bomb.NORM) {
+                factory.bombSound();
                 if (f[i] == false) {
                     lives--;
                     go.setPosY(563);
@@ -128,7 +127,8 @@ public class MediumLevel implements Level {
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
-                lives=0;
+                factory.redSound();
+                lives = 0;
             }
         }
     }
@@ -140,14 +140,9 @@ public class MediumLevel implements Level {
                 lives--;
             }
             flag[i] = false;
-            objects.remove(go);
             go = actions.createGameObject();
-            objects.add(go);
             s[i] = false;
             f[i] = false;
-        }
-        if (lives == 0) {
-            w=true;
         }
         return go;
     }
@@ -157,18 +152,20 @@ public class MediumLevel implements Level {
         this.go2 = actions.createGameObject();
         this.go1 = actions.createGameObject();
         this.go = actions.createGameObject();
-        objects.add(go);
-        objects.add(go1);
-        objects.add(go2);
-        objects.add(go3);
+        factory.setSeconds(0);
         score = 0;
         lives = 3;
-        w=false;
+        complete.removeRecs();
         for (int i = 0; i < 4; i++) {
             this.flag[i] = false;
             this.s[i] = false;
             this.f[i] = false;
         }
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 
     public GameObject getGo() {
@@ -189,6 +186,11 @@ public class MediumLevel implements Level {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    @Override
+    public int getTime() {
+        return time;
     }
 
 }

@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Rectangle2D;
 import javafx.geometry.Side;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
