@@ -1,10 +1,8 @@
 
 package fruitninja;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
@@ -14,9 +12,6 @@ import javax.imageio.ImageIO;
 
 public class Melon extends Fruit{
     private fruit melon ;
-    
-    private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
-    
     public Melon() {
         points=1;
         melon =fruit.MELON;

@@ -13,10 +13,6 @@ import javax.imageio.ImageIO;
 
 public class Apple extends Fruit{
         private Fruit.fruit apple ;
-    
-    private BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
-    private BufferedImage bi1 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
-    private BufferedImage bi2 =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
     public Apple() {
         points=1;
         apple =Fruit.fruit.APPLE;
@@ -51,11 +47,13 @@ public class Apple extends Fruit{
         return  image;
     }
     
+        @Override
     public javafx.scene.image.Image getImage1(){
         Image image = SwingFXUtils.toFXImage(this.bi1, null);
         return  image;
     }
     
+        @Override
     public javafx.scene.image.Image getImage2(){
         Image image = SwingFXUtils.toFXImage(this.bi2, null);
         return  image;

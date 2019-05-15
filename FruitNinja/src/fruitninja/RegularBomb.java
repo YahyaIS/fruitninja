@@ -1,7 +1,6 @@
 
 package fruitninja;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -15,8 +14,6 @@ import javax.imageio.ImageIO;
 public class RegularBomb extends Bombs{
     
     private bomb regbomb;
-    private Rectangle2D rec;
-    private BufferedImage bi = new BufferedImage(100, 200, BufferedImage.TYPE_INT_RGB);
     public RegularBomb() {
         regbomb = bomb.NORM;
         File input = new File("regbomb.png");
@@ -43,9 +40,4 @@ public class RegularBomb extends Bombs{
     public Enum getObjectType() {
         return regbomb;
     }
-
-    
-
-
-    
 }

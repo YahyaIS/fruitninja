@@ -61,7 +61,9 @@ public abstract class Fruit implements GameObject {
 
     @Override
     public Rectangle2D getRec() {
+        if(rec!=null)
         return rec;
+        else return null;
     }
 
     @Override
