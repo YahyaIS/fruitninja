@@ -37,7 +37,7 @@ public class CareTaker {
             System.out.println("A7AAA");
          else if(level != null){
         String highscoree =" ";
-        File xmlfile= new File("C:\\Users\\omar_\\OneDrive\\Documents\\NetBeansProjects\\fn-master\\fn-master\\FruitNinja\\game.xml");
+        File xmlfile= new File("D:\\Projects\\Java\\FruitNinja\\game.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	Document doc = dBuilder.parse(xmlfile);

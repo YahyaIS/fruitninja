@@ -13,12 +13,25 @@ import javax.imageio.ImageIO;
 
 public class Background {
     
-    private static Background istance;
+    private static Background instance;
     
     
     
 
-    public Background(GraphicsContext gc) {
+    private Background() {
+      
+    }
+    public static Background getInstance (){
+
+        if (instance == null)
+
+            instance = new Background();
+
+        return instance;
+
+    }
+    
+    public void drawBackground(GraphicsContext gc){
         BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);
         File input_file = new File("background.jpg");
         try {
