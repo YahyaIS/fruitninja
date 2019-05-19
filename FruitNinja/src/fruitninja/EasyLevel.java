@@ -1,13 +1,21 @@
 package fruitninja;
 
+import Momento.CareTaker;
+import Momento.Momento;
+import Momento.Originator;
 import fruitninja.Bombs.bomb;
 import fruitninja.Fruit.fruit;
+import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class EasyLevel implements Level {
 
+    private final String level = "easy";
     private final Factory factory;
     private final GameActions actions;
     private boolean[] flag;
@@ -19,8 +27,16 @@ public class EasyLevel implements Level {
     private final Scene scene;
     private final Complete complete;
     private int score, lives, time;
+    private final Originator originator;
+    private final Momento momento;
+    private final CareTaker careTaker;
+    private int highscore;
+    private double x, y;
 
-    public EasyLevel(Factory factory, Scene scene) {
+    public EasyLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
+        originator = new Originator();
+        momento = new Momento();
+        careTaker = new CareTaker();
         this.lives = 3;
         this.score = 0;
         this.flag = new boolean[3];
@@ -30,13 +46,16 @@ public class EasyLevel implements Level {
         this.factory = factory;
         this.complete = new Complete();
         this.scene = scene;
+        this.factory.loadScore(this.originator, this.level, this);
     }
 
     @Override
     public void manageLevel() {
+
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
+        factory.showHighScore(highscore);
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
@@ -47,25 +66,33 @@ public class EasyLevel implements Level {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
         } else if (lives == 0) {
+            momento.setHighscore(score);
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
             factory.drawW(this);
+            factory.saveScore(careTaker, level, score);
         }
         if (lives > 0) {
-            factory.showTime();
-            time = factory.getSeconds();
-            objectMotion(go, 0);
-            objectMotion(go1, 1);
-            objectMotion(go2, 2);
-            go = checkEnd(go, 0);
-            go1 = checkEnd(go1, 1);
-            go2 = checkEnd(go2, 2);
+            try {
+                factory.showTime();
+                time = factory.getSeconds();
+                objectMotion(go, 0);
+                objectMotion(go1, 1);
+                objectMotion(go2, 2);
+                go = checkEnd(go, 0);
+                go1 = checkEnd(go1, 1);
+                go2 = checkEnd(go2, 2);
+            } catch (ParserConfigurationException | IOException | SAXException ex) {
+                Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
+                    x = e.getX();
+                    y = e.getY();
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         s[0] = true;
                     }
@@ -76,13 +103,18 @@ public class EasyLevel implements Level {
                         s[2] = true;
                     }
                 });
+        factory.shadow(x, y, this);
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(1);
-                        initGame();
+                        try {
+                            initGame();
+                        } catch (ParserConfigurationException | IOException | SAXException ex) {
+                            Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     }
                 });
 
@@ -122,7 +154,7 @@ public class EasyLevel implements Level {
         }
     }
 
-    public GameObject checkEnd(GameObject go, int i) {
+    public GameObject checkEnd(GameObject go, int i) throws ParserConfigurationException, IOException, SAXException {
         if (go.getPosY() > 562) {
             if (s[i] == false && (go.getObjectType() == fruit.APPLE || go.getObjectType() == fruit.BANANA
                     || go.getObjectType() == fruit.MELON)) {
@@ -132,11 +164,13 @@ public class EasyLevel implements Level {
             go = actions.createGameObject();
             s[i] = false;
             f[i] = false;
+
         }
         return go;
     }
 
-    public void initGame() {
+    public void initGame() throws ParserConfigurationException, IOException, SAXException {
+        factory.loadScore(originator, level, this);
         this.go2 = actions.createGameObject();
         this.go1 = actions.createGameObject();
         this.go = actions.createGameObject();
@@ -177,4 +211,14 @@ public class EasyLevel implements Level {
         return time;
     }
 
+    @Override
+    public void setHighScore(int highscore) {
+        this.highscore = highscore;
+    }
+
+    @Override
+    public void setXY(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 }

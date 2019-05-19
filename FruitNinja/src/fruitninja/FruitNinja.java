@@ -1,6 +1,7 @@
 
 package fruitninja;
 
+import Momento.Originator;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -9,13 +10,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 public class FruitNinja extends Application{
-    
+    Originator originator;
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+       
+                
         stage.setTitle("Fruit Ninja");
         Canvas canvas = new Canvas(1000, 562);
         Group root = new Group();
