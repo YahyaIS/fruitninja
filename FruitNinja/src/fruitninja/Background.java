@@ -12,6 +12,11 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 public class Background {
+    
+    private static Background istance;
+    
+    
+    
 
     public Background(GraphicsContext gc) {
         BufferedImage bi =new BufferedImage(100,200,BufferedImage.TYPE_INT_RGB);

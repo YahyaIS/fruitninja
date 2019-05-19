@@ -5,16 +5,27 @@
  */
 package fruitninja;
 
+import Momento.CareTaker;
+import Momento.Momento;
+import Momento.Originator;
+import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author seif
  */
 public class HardLevel implements Level {
-
+    Originator originator;
+    Momento momento;
+    CareTaker careTaker;
+    private int highscore;
     private final Factory factory;
     private final GameActions actions;
     private boolean[] flag;
@@ -28,8 +39,11 @@ public class HardLevel implements Level {
     private final Scene scene;
     private final Complete complete;
     private int score, lives ,time;
-
-    public HardLevel(Factory factory, Scene scene) {
+    String level = "Hard";
+    public HardLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
+        originator = new Originator();
+        momento = new Momento();
+        careTaker = new CareTaker();
         this.lives = 3;
         this.score = 0;
         this.flag = new boolean[5];
@@ -39,6 +53,7 @@ public class HardLevel implements Level {
         this.factory = factory;
         this.scene = scene;
         this.complete = new Complete();
+        this.highscore=originator.restore(level);
     }
 
     @Override
@@ -46,6 +61,7 @@ public class HardLevel implements Level {
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
+        factory.showHighScore(highscore);
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
@@ -57,12 +73,25 @@ public class HardLevel implements Level {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
         } else if (lives == 0) {
-            factory.drawRx(940, 25);
-            factory.drawRx(860, 25);
-            factory.drawRx(780, 25);
-            complete.setRec1();
-            complete.setRec2();
-            factory.drawW(this);
+            try {
+                momento.setHighscore(score);
+                
+                factory.drawRx(940, 25);
+                factory.drawRx(860, 25);
+                factory.drawRx(780, 25);
+                complete.setRec1();
+                complete.setRec2();
+                factory.drawW(this);
+                careTaker.addMomento(score,level);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (SAXException ex) {
+                Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (TransformerException ex) {
+                Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
         if (lives > 0) {
             factory.showTime();
@@ -98,7 +127,15 @@ public class HardLevel implements Level {
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(3);
-                        initGame();
+                        try {
+                            initGame();
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     }
                 });
     }
@@ -152,7 +189,8 @@ public class HardLevel implements Level {
         return go;
     }
 
-    public void initGame() {
+    public void initGame() throws ParserConfigurationException, SAXException, IOException {
+        this.highscore = originator.restore(level);
         this.go4 = actions.createGameObject();
         this.go3 = actions.createGameObject();
         this.go2 = actions.createGameObject();

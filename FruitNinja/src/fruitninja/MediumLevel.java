@@ -5,9 +5,17 @@
  */
 package fruitninja;
 
+import Momento.CareTaker;
+import Momento.Momento;
+import Momento.Originator;
+import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -16,6 +24,9 @@ import javafx.scene.input.MouseEvent;
 public class MediumLevel implements Level {
 
     private final Factory factory;
+    Originator originator;
+    Momento momento;
+    CareTaker careTaker;
     private final GameActions actions;
     private boolean[] flag;
     private boolean[] s;
@@ -27,8 +38,12 @@ public class MediumLevel implements Level {
     private final Scene scene;
     private int score, lives, time;
     private final Complete complete;
-
-    public MediumLevel(Factory factory, Scene scene) {
+    private int highscore;
+    String level = "Medium";
+    public MediumLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
+        originator = new Originator();
+        momento = new Momento();
+        careTaker = new CareTaker();
         this.lives = 3;
         this.score = 0;
         this.flag = new boolean[4];
@@ -38,6 +53,7 @@ public class MediumLevel implements Level {
         this.factory = factory;
         this.scene = scene;
         this.complete = new Complete();
+        this.highscore=originator.restore(level);
     }
 
     @Override
@@ -45,6 +61,7 @@ public class MediumLevel implements Level {
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
+        factory.showHighScore(highscore);
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
@@ -56,12 +73,25 @@ public class MediumLevel implements Level {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
         } else if (lives == 0) {
-            factory.drawRx(940, 25);
-            factory.drawRx(860, 25);
-            factory.drawRx(780, 25);
-            complete.setRec1();
-            complete.setRec2();
-            factory.drawW(this);
+            try {
+                momento.setHighscore(score);
+                
+                factory.drawRx(940, 25);
+                factory.drawRx(860, 25);
+                factory.drawRx(780, 25);
+                complete.setRec1();
+                complete.setRec2();
+                factory.drawW(this);
+                careTaker.addMomento(score,level);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (SAXException ex) {
+                Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (TransformerException ex) {
+                Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
         if (lives > 0) {
             factory.showTime();
@@ -93,7 +123,15 @@ public class MediumLevel implements Level {
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(2);
-                        initGame();
+                        try {
+                            initGame();
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     }
                 });
 
@@ -147,7 +185,8 @@ public class MediumLevel implements Level {
         return go;
     }
 
-    public void initGame() {
+    public void initGame() throws ParserConfigurationException, SAXException, IOException {
+        this.highscore = originator.restore(level);
         this.go3 = actions.createGameObject();
         this.go2 = actions.createGameObject();
         this.go1 = actions.createGameObject();

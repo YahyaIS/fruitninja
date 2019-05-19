@@ -68,4 +68,16 @@ public class TheActions implements GameActions {
         this.deltaY = deltaY;
     }
 
+    @Override
+    public void saveGame() {
+    }
+
+    @Override
+    public void loadGame() {
+    }
+
+    @Override
+    public void ResetGame() {
+    }
+
 }

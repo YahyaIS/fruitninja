@@ -7,4 +7,7 @@ public interface GameActions {
     public void updateHalf(Fruit go);
     public void setDeltaX(float x);
     public void setDeltaY(float y);
+    public void saveGame();
+    public void loadGame();
+    public void ResetGame();
 }
