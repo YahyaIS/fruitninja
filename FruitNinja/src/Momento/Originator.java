@@ -33,7 +33,7 @@ public class Originator {
     public void save(String level,int high) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException{
         String highscoreItoS = String.valueOf(high);
         String highscoree =" ";
-        File xmlfile= new File("C:\\Users\\omar_\\OneDrive\\Documents\\NetBeansProjects\\fn-master\\fn-master\\FruitNinja\\game.xml");
+        File xmlfile= new File("D:\\Projects\\Java\\FruitNinja\\game.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	Document doc = dBuilder.parse(xmlfile);
@@ -83,7 +83,7 @@ public class Originator {
         }
     public int restore(String level) throws ParserConfigurationException, SAXException, IOException{
         String highscoree =" ";
-        File xmlfile= new File("C:\\Users\\omar_\\OneDrive\\Documents\\NetBeansProjects\\fn-master\\fn-master\\FruitNinja\\game.xml");
+        File xmlfile= new File("D:\\Projects\\Java\\FruitNinja\\game.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	Document doc = dBuilder.parse(xmlfile);

@@ -18,7 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 public class Factory {
-
+    
     private final String uriString ,sliString ,bombString,redString;
     private final MediaPlayer player;
     private  MediaPlayer sliceSound;
@@ -34,6 +34,7 @@ public class Factory {
     private Timer timer;
     private int seconds;
     private final Complete complete; 
+    private Background bg;
     TimerTask task = new TimerTask() {
 
         @Override
@@ -56,6 +57,7 @@ public class Factory {
         el = new EasyLevel(this, scene);
         ml = new MediumLevel(this, scene);
         hl = new HardLevel(this, scene);
+        bg=Background.getInstance();
     }
     
     public void time(){
@@ -222,7 +224,7 @@ public class Factory {
     }
 
     public void drawBackGround() {
-        Background bg = new Background(gc);
+        bg.drawBackground(gc);
     }
 
     public void setState(int state) {
