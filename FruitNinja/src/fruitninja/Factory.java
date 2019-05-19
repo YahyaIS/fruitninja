@@ -1,8 +1,16 @@
 package fruitninja;
 
+import Momento.CareTaker;
+import Momento.Originator;
+import command.Command;
+import command.Invoker;
+import command.LoadCommand;
+import command.SaveCommand;
 import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,9 +20,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class Factory {
-
+    
+    private Invoker control = new Invoker();
     private final String uriString ,sliString ,bombString,redString;
     private final MediaPlayer player;
     private  MediaPlayer sliceSound;
@@ -30,6 +41,7 @@ public class Factory {
     private Timer timer;
     private int seconds;
     private final Complete complete; 
+    private Background bg;
     TimerTask task = new TimerTask() {
 
         @Override
@@ -37,7 +49,8 @@ public class Factory {
             seconds++;
         }
     };
-    public Factory(GraphicsContext gc, Scene scene) {
+    
+    public Factory(GraphicsContext gc, Scene scene) throws ParserConfigurationException, SAXException, IOException  {
         this.state = 0;
         this.uriString = new File("roc.mp3").toURI().toString();
         this.sliString = new File("sword.mp3").toURI().toString();
@@ -52,6 +65,25 @@ public class Factory {
         el = new EasyLevel(this, scene);
         ml = new MediumLevel(this, scene);
         hl = new HardLevel(this, scene);
+        bg=Background.getInstance();
+    }
+    
+    public void saveScore(CareTaker careTaker , String level , int score){
+        Command saveC = new SaveCommand(careTaker, score, level);
+        control.setCommand(saveC);
+        control.action();
+    }
+    
+    public void loadScore(Originator originator , String level , Level l){
+        Command loadC = new LoadCommand(originator, level, l);
+        control.setCommand(loadC);
+        control.action();
+    }
+    
+    public void shadow(double x ,double y , Level level){
+        gc.setFill(Color.BLUEVIOLET);
+        gc.fillOval(x, y, 10, 10);
+        level.setXY(-15,-15);
     }
     
     public void time(){
@@ -96,21 +128,45 @@ public class Factory {
                 } else if (state == 1) {
                     menu.removeRecs();
                     if(!first){
-                        el.initGame();
-                        first=true;
+                        try {
+                            el.initGame();
+                            first=true;
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     }
                     gotoLevel(el);
                 } else if (state == 2) {
                     menu.removeRecs();
                     if(!first){
-                        ml.initGame();
+                        try {
+                            ml.initGame();
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                         first=true;
                     }
                     gotoLevel(ml);
                 } else if (state == 3) {
                     menu.removeRecs();
                     if(!first){
-                        hl.initGame();
+                        try {
+                            hl.initGame();
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                         first=true;
                     }
                     gotoLevel(hl);
@@ -157,6 +213,10 @@ public class Factory {
         gc.setFill(Color.BLACK);
         gc.fillText("Score : " + score, 70, 15);
     }
+    public void showHighScore(int score) {
+        gc.setFill(Color.BLACK);
+        gc.fillText("High score : " + score, 300, 15);
+    }
     
     public void drawW(Level level){
         gc.drawImage(complete.getWImage(), 300, 125);
@@ -190,7 +250,7 @@ public class Factory {
     }
 
     public void drawBackGround() {
-        Background bg = new Background(gc);
+        bg.drawBackground(gc);
     }
 
     public void setState(int state) {
