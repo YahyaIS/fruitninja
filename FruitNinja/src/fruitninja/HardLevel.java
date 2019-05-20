@@ -41,6 +41,7 @@ public class HardLevel implements Level {
     private int score, lives, time;
     String level = "Hard";
     private double x, y;
+    private boolean p=false;
 
     public HardLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         originator = new Originator();
@@ -63,10 +64,17 @@ public class HardLevel implements Level {
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
+        factory.drawP();
         factory.showHighScore(highscore);
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
+        if(p){
+            factory.drawPause();
+            factory.showPause();
+            complete.setRec1();
+            complete.setRec2();
+        }
 
         if (lives == 2) {
             factory.drawRx(940, 25);
@@ -81,10 +89,10 @@ public class HardLevel implements Level {
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
-            factory.drawW(this);
+            factory.drawW(this,score,highscore);
             factory.saveScore(careTaker, level, score);
         }
-        if (lives > 0) {
+        if (lives > 0 && !p) {
             factory.showTime();
             time = factory.getSeconds();
             objectMotion(go, 0);
@@ -118,8 +126,10 @@ public class HardLevel implements Level {
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
+                        p=false;
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
+                        p=false;
                         factory.setState(3);
                         try {
                             initGame();
@@ -130,6 +140,13 @@ public class HardLevel implements Level {
                         } catch (IOException ex) {
                             Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
+                    }else if (complete.getRec3().contains(e.getX(), e.getY())) {
+                        p=true;
+                    }
+                      else if (complete.getRec4().contains(e.getX(), e.getY())) {
+                        complete.removeRecs();
+                        p=false;
+                        
                     }
                 });
     }
@@ -193,6 +210,7 @@ public class HardLevel implements Level {
         factory.setSeconds(0);
         score = 0;
         lives = 3;
+        p=false;
         complete.removeRecs();
         for (int i = 0; i < 5; i++) {
             this.flag[i] = false;

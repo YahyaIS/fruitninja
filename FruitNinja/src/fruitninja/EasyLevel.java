@@ -32,6 +32,7 @@ public class EasyLevel implements Level {
     private final CareTaker careTaker;
     private int highscore;
     private double x, y;
+    private boolean p=false;
 
     public EasyLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         originator = new Originator();
@@ -56,10 +57,16 @@ public class EasyLevel implements Level {
         factory.drawBackGround();
         factory.showScore(score);
         factory.showHighScore(highscore);
+        factory.drawP();
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-
+        if(p){
+            factory.drawPause();
+            factory.showPause();
+            complete.setRec1();
+            complete.setRec2();
+        }
         if (lives == 2) {
             factory.drawRx(940, 25);
         } else if (lives == 1) {
@@ -72,10 +79,10 @@ public class EasyLevel implements Level {
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
-            factory.drawW(this);
+            factory.drawW(this,score,highscore);
             factory.saveScore(careTaker, level, score);
         }
-        if (lives > 0) {
+        if (lives > 0 && !p) {
             try {
                 factory.showTime();
                 time = factory.getSeconds();
@@ -106,15 +113,24 @@ public class EasyLevel implements Level {
         factory.shadow(x, y, this);
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
-                    if (complete.getRec1().contains(e.getX(), e.getY())) {
+                      if (complete.getRec1().contains(e.getX(), e.getY())) {
                         factory.setState(0);
-                    } else if (complete.getRec2().contains(e.getX(), e.getY())) {
+                        p=false;
+                    }  else if (complete.getRec2().contains(e.getX(), e.getY())) {
                         factory.setState(1);
+                        p=false;
                         try {
                             initGame();
                         } catch (ParserConfigurationException | IOException | SAXException ex) {
                             Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
+                    } else if (complete.getRec3().contains(e.getX(), e.getY())) {
+                        p=true;
+                    }
+                      else if (complete.getRec4().contains(e.getX(), e.getY())) {
+                        complete.removeRecs();
+                        p=false;
+                        
                     }
                 });
 
@@ -177,6 +193,7 @@ public class EasyLevel implements Level {
         factory.setSeconds(0);
         score = 0;
         lives = 3;
+        p=false;
         complete.removeRecs();
         for (int i = 0; i < 3; i++) {
             this.flag[i] = false;
