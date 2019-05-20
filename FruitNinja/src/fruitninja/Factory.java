@@ -101,6 +101,7 @@ public class Factory {
         player.play();
     }
     
+    
     public void redSound(){
         this.sliceSound = new MediaPlayer(new Media(redString));
         sliceSound.play();
@@ -208,6 +209,13 @@ public class Factory {
         score += go.getPoints();
         return score;
     }
+    
+    public void showPause(){
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFill(Color.RED);
+        gc.fillText("Pause", 500, 180);
+    }
 
     public void showScore(int score) {
         gc.setFill(Color.BLACK);
@@ -218,7 +226,18 @@ public class Factory {
         gc.fillText("High score : " + score, 300, 15);
     }
     
-    public void drawW(Level level){
+    public void drawPause(){
+        gc.drawImage(complete.getWImage(), 300, 125);
+        gc.drawImage(complete.getRImage(), 610, 315);
+        gc.drawImage(complete.getBImage(), 325, 315);
+        gc.drawImage(complete.getSImage(), 460, 300);
+    }
+    
+    public void drawP(){
+        gc.drawImage(complete.getPImage(), 30, 70);
+    }
+    
+    public void drawW(Level level,int score,int highscore){
         gc.drawImage(complete.getWImage(), 300, 125);
         gc.drawImage(complete.getRImage(), 610, 315);
         gc.drawImage(complete.getBImage(), 325, 315);
@@ -228,6 +247,9 @@ public class Factory {
         gc.fillText("You Lost!", 500, 180);
         gc.fillText("Score :" + level.getScore(), 505, 220);
         gc.fillText("Time :" + level.getTime(), 505, 260);
+        if(score > highscore){
+            gc.fillText("New Highscore!", 500, 295);
+        }
     }
 
     public void options() {
@@ -247,6 +269,10 @@ public class Factory {
 
     public void drawMenu() {
         menu.Draw();
+    }
+    
+    public void showCongrats(){
+        
     }
 
     public void drawBackGround() {

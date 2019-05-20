@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Game>
+
+
+<Level Type="easy">
+
+<HighScore>100</HighScore>
+
+</Level>
+
+
+<Level Type="Medium">
+
+<HighScore>200</HighScore>
+
+</Level>
+
+
+<Level Type="Hard">
+
+<HighScore>300</HighScore>
+
+</Level>
+
+</Game>
