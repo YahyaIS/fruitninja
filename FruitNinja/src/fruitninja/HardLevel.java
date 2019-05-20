@@ -16,10 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author seif
- */
 public class HardLevel implements Level {
 
     private final Originator originator;
@@ -41,7 +37,7 @@ public class HardLevel implements Level {
     private int score, lives, time;
     String level = "Hard";
     private double x, y;
-    private boolean p=false;
+    private boolean p = false;
 
     public HardLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         originator = new Originator();
@@ -69,7 +65,7 @@ public class HardLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-        if(p){
+        if (p) {
             factory.drawPause();
             factory.showPause();
             complete.setRec1();
@@ -89,7 +85,7 @@ public class HardLevel implements Level {
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
-            factory.drawW(this,score,highscore);
+            factory.drawW(this, score, highscore);
             factory.saveScore(careTaker, level, score);
         }
         if (lives > 0 && !p) {
@@ -126,27 +122,23 @@ public class HardLevel implements Level {
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
-                        p=false;
+                        p = false;
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
-                        p=false;
+                        p = false;
                         factory.setState(3);
                         try {
                             initGame();
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
-                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
                             Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                    }else if (complete.getRec3().contains(e.getX(), e.getY())) {
-                        p=true;
-                    }
-                      else if (complete.getRec4().contains(e.getX(), e.getY())) {
+                    } else if (complete.getRec3().contains(e.getX(), e.getY())) {
+                        p = true;
+                    } else if (complete.getRec4().contains(e.getX(), e.getY())) {
                         complete.removeRecs();
-                        p=false;
-                        
+                        factory.setSeconds(time);
+                        p = false;
+
                     }
                 });
     }
@@ -176,7 +168,6 @@ public class HardLevel implements Level {
                     lives--;
                     go.setPosY(563);
                     f[i] = true;
-
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
@@ -193,7 +184,7 @@ public class HardLevel implements Level {
                 lives--;
             }
             flag[i] = false;
-            go = actions.createGameObject();
+            this.go = actions.createGameObject(factory.getState());
             s[i] = false;
             f[i] = false;
         }
@@ -202,15 +193,15 @@ public class HardLevel implements Level {
 
     public void initGame() throws ParserConfigurationException, SAXException, IOException {
         factory.loadScore(originator, level, this);
-        this.go4 = actions.createGameObject();
-        this.go3 = actions.createGameObject();
-        this.go2 = actions.createGameObject();
-        this.go1 = actions.createGameObject();
-        this.go = actions.createGameObject();
+        this.go4 = actions.createGameObject(factory.getState());
+        this.go3 = actions.createGameObject(factory.getState());
+        this.go2 = actions.createGameObject(factory.getState());
+        this.go1 = actions.createGameObject(factory.getState());
+        this.go = actions.createGameObject(factory.getState());
         factory.setSeconds(0);
         score = 0;
         lives = 3;
-        p=false;
+        p = false;
         complete.removeRecs();
         for (int i = 0; i < 5; i++) {
             this.flag[i] = false;
