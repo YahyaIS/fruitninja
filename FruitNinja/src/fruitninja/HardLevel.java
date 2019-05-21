@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fruitninja;
 
 import Momento.CareTaker;
 import Momento.Momento;
 import Momento.Originator;
+import fruitninja.Bombs.bomb;
+import fruitninja.Fruit.fruit;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.event.EventHandler;
@@ -16,16 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author seif
- */
 public class HardLevel implements Level {
 
-    private final Originator originator;
-    private final Momento momento;
-    private final CareTaker careTaker;
-    private int highscore;
+    private final String level = "Hard";
     private final Factory factory;
     private final GameActions actions;
     private boolean[] flag;
@@ -39,9 +29,12 @@ public class HardLevel implements Level {
     private final Scene scene;
     private final Complete complete;
     private int score, lives, time;
-    String level = "Hard";
+    private final Originator originator;
+    private final Momento momento;
+    private final CareTaker careTaker;
+    private int highscore;
     private double x, y;
-    private boolean p=false;
+    private boolean p = false;
 
     public HardLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         originator = new Originator();
@@ -54,31 +47,30 @@ public class HardLevel implements Level {
         this.f = new boolean[5];
         this.actions = new TheActions();
         this.factory = factory;
-        this.scene = scene;
         this.complete = new Complete();
+        this.scene = scene;
         this.factory.loadScore(this.originator, this.level, this);
     }
 
     @Override
     public void manageLevel() {
+
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
-        factory.drawP();
         factory.showHighScore(highscore);
+        factory.drawP();
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-        if(p){
+        if (p) {
             factory.drawPause();
             factory.showPause();
             complete.setRec1();
             complete.setRec2();
         }
-
         if (lives == 2) {
             factory.drawRx(940, 25);
-
         } else if (lives == 1) {
             factory.drawRx(940, 25);
             factory.drawRx(860, 25);
@@ -89,22 +81,26 @@ public class HardLevel implements Level {
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
-            factory.drawW(this,score,highscore);
+            factory.drawW(this, score, highscore);
             factory.saveScore(careTaker, level, score);
         }
         if (lives > 0 && !p) {
-            factory.showTime();
-            time = factory.getSeconds();
-            objectMotion(go, 0);
-            objectMotion(go1, 1);
-            objectMotion(go2, 2);
-            objectMotion(go3, 3);
-            objectMotion(go4, 4);
-            go = checkEnd(go, 0);
-            go1 = checkEnd(go1, 1);
-            go2 = checkEnd(go2, 2);
-            go3 = checkEnd(go3, 3);
-            go4 = checkEnd(go4, 4);
+            try {
+                factory.showTime();
+                time = factory.getSeconds();
+                objectMotion(go, 0);
+                objectMotion(go1, 1);
+                objectMotion(go2, 2);
+                objectMotion(go3, 3);
+                objectMotion(go4, 4);
+                go = checkEnd(go, 0);
+                go1 = checkEnd(go1, 1);
+                go2 = checkEnd(go2, 2);
+                go3 = checkEnd(go3, 3);
+                go4 = checkEnd(go4, 4);
+            } catch (ParserConfigurationException | IOException | SAXException ex) {
+                Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
@@ -112,13 +108,17 @@ public class HardLevel implements Level {
                     y = e.getY();
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         s[0] = true;
-                    } else if (go1.getRec().contains(e.getX(), e.getY())) {
+                    }
+                    if (go1.getRec().contains(e.getX(), e.getY())) {
                         s[1] = true;
-                    } else if (go2.getRec().contains(e.getX(), e.getY())) {
+                    }
+                    if (go2.getRec().contains(e.getX(), e.getY())) {
                         s[2] = true;
-                    } else if (go3.getRec().contains(e.getX(), e.getY())) {
+                    }
+                    if (go3.getRec().contains(e.getX(), e.getY())) {
                         s[3] = true;
-                    } else if (go4.getRec().contains(e.getX(), e.getY())) {
+                    }
+                    if (go4.getRec().contains(e.getX(), e.getY())) {
                         s[4] = true;
                     }
                 });
@@ -126,29 +126,25 @@ public class HardLevel implements Level {
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
-                        p=false;
                         factory.setState(0);
+                        p = false;
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
-                        p=false;
                         factory.setState(3);
+                        p = false;
                         try {
                             initGame();
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
-                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(HardLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        } catch (ParserConfigurationException | IOException | SAXException ex) {
+                            Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                    }else if (complete.getRec3().contains(e.getX(), e.getY())) {
-                        p=true;
-                    }
-                      else if (complete.getRec4().contains(e.getX(), e.getY())) {
+                    } else if (complete.getRec3().contains(e.getX(), e.getY())) {
+                        p = true;
+                    } else if (complete.getRec4().contains(e.getX(), e.getY())) {
                         complete.removeRecs();
-                        p=false;
-                        
+                        factory.setSeconds(time);
+                        p = false;
                     }
                 });
+
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -160,9 +156,9 @@ public class HardLevel implements Level {
         if (s[i] == false) {
             actions.updateObjectPlace(go);
             factory.drawObject(go);
-
         } else if (s[i] == true) {
-            if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
+            if (go.getObjectType() == fruit.BANANA || go.getObjectType() == fruit.MELON
+                    || go.getObjectType() == fruit.APPLE || go.getObjectType() == fruit.SUPERFRUIT) {
                 if (f[i] == false) {
                     factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
@@ -170,47 +166,81 @@ public class HardLevel implements Level {
                 }
                 actions.updateHalf((Fruit) go);
                 factory.drawHalf((Fruit) go);
-            } else if (go.getObjectType() == Bombs.bomb.NORM) {
+            }
+            if (go.getObjectType() == bomb.NORM) {
                 if (f[i] == false) {
                     factory.bombSound();
                     lives--;
                     go.setPosY(563);
                     f[i] = true;
-
                 }
                 actions.updateObjectPlace(go);
-            } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
+            }
+            if (go.getObjectType() == bomb.DEADLY) {
                 factory.redSound();
                 lives = 0;
+            }
+            if (go.getObjectType() == fruit.POWERFRUIT) {
+                if (f[i] == false) {
+                    f[i] = true;
+                    if (this.go.getObjectType() != bomb.DEADLY && this.go.getObjectType() != bomb.NORM) {
+                        s[0] = true;
+                    } else this.go.setPosY(563);
+                    if (this.go1.getObjectType() != bomb.DEADLY && this.go1.getObjectType() != bomb.NORM) {
+                        s[1] = true;
+                    } else this.go1.setPosY(563);
+                    if (this.go2.getObjectType() != bomb.DEADLY && this.go2.getObjectType() != bomb.NORM) {
+                        s[2] = true;
+                    } else this.go2.setPosY(563);
+                    if (this.go3.getObjectType() != bomb.DEADLY && this.go3.getObjectType() != bomb.NORM) {
+                        s[3] = true;
+                    } else this.go3.setPosY(563);
+                    if (this.go4.getObjectType() != bomb.DEADLY && this.go4.getObjectType() != bomb.NORM) {
+                        s[4] = true;
+                    } else this.go4.setPosY(563);
+                }
+                actions.updateHalf((Fruit) go);
+                factory.drawHalf((Fruit) go);
+            }
+            if (go.getObjectType() == fruit.LIFEFRUIT) {
+                if (f[i] == false) {
+                    f[i] = true;
+                    if (lives < 3) {
+                        lives++;
+                    }
+                }
+                actions.updateHalf((Fruit) go);
+                factory.drawHalf((Fruit) go);
             }
         }
     }
 
-    public GameObject checkEnd(GameObject go, int i) {
+    public GameObject checkEnd(GameObject go, int i) throws ParserConfigurationException, IOException, SAXException {
         if (go.getPosY() > 562) {
-            if (s[i] == false && (go.getObjectType() == Fruit.fruit.APPLE || go.getObjectType() == Fruit.fruit.BANANA
-                    || go.getObjectType() == Fruit.fruit.MELON)) {
+            if (s[i] == false && (go.getObjectType() == fruit.APPLE || go.getObjectType() == fruit.BANANA
+                    || go.getObjectType() == fruit.MELON)) {
                 lives--;
+                factory.beepSound();
             }
             flag[i] = false;
-            go = actions.createGameObject();
+            go = actions.createGameObject(factory.getState());
             s[i] = false;
             f[i] = false;
         }
         return go;
     }
 
-    public void initGame() throws ParserConfigurationException, SAXException, IOException {
+    public void initGame() throws ParserConfigurationException, IOException, SAXException {
         factory.loadScore(originator, level, this);
-        this.go4 = actions.createGameObject();
-        this.go3 = actions.createGameObject();
-        this.go2 = actions.createGameObject();
-        this.go1 = actions.createGameObject();
-        this.go = actions.createGameObject();
+        this.go4 = actions.createGameObject(factory.getState());
+        this.go3 = actions.createGameObject(factory.getState());
+        this.go2 = actions.createGameObject(factory.getState());
+        this.go1 = actions.createGameObject(factory.getState());
+        this.go = actions.createGameObject(factory.getState());
         factory.setSeconds(0);
         score = 0;
         lives = 3;
-        p=false;
+        p = false;
         complete.removeRecs();
         for (int i = 0; i < 5; i++) {
             this.flag[i] = false;
@@ -234,10 +264,6 @@ public class HardLevel implements Level {
 
     public GameObject getGo2() {
         return go2;
-    }
-
-    public GameObject getGo3() {
-        return go3;
     }
 
     public void setLives(int lives) {

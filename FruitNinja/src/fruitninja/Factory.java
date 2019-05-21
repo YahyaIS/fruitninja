@@ -24,11 +24,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 public class Factory {
-    
-    private Invoker control = new Invoker();
-    private final String uriString ,sliString ,bombString,redString;
+
+    private final Invoker control = new Invoker();
+    private final String uriString, sliString, bombString, redString, beepString, congratsString, loserString;
     private final MediaPlayer player;
-    private  MediaPlayer sliceSound;
+    private MediaPlayer sliceSound;
     private final GraphicsContext gc;
     private final Scene scene;
     private final Menu menu;
@@ -37,25 +37,35 @@ public class Factory {
     private final EasyLevel el;
     private final MediumLevel ml;
     private final HardLevel hl;
+    private final ArcadeMode am;
     private boolean first;
     private Timer timer;
     private int seconds;
-    private final Complete complete; 
-    private Background bg;
+    private final Complete complete;
+    private final Background bg;
+    private Boolean flag;
     TimerTask task = new TimerTask() {
 
         @Override
         public void run() {
-            seconds++;
+
+            if (state == 4) {
+                seconds--;
+            } else {
+                seconds++;
+            }
         }
     };
-    
-    public Factory(GraphicsContext gc, Scene scene) throws ParserConfigurationException, SAXException, IOException  {
+
+    public Factory(GraphicsContext gc, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         this.state = 0;
         this.uriString = new File("roc.mp3").toURI().toString();
         this.sliString = new File("sword.mp3").toURI().toString();
         this.redString = new File("explode.mp3").toURI().toString();
         this.bombString = new File("explode2.mp3").toURI().toString();
+        this.beepString = new File("beep.mp3").toURI().toString();
+        this.congratsString = new File("congrats.mp3").toURI().toString();
+        this.loserString = new File("loser.wav").toURI().toString();
         this.player = new MediaPlayer(new Media(uriString));
         this.gc = gc;
         this.scene = scene;
@@ -65,58 +75,73 @@ public class Factory {
         el = new EasyLevel(this, scene);
         ml = new MediumLevel(this, scene);
         hl = new HardLevel(this, scene);
-        bg=Background.getInstance();
+        am = new ArcadeMode(this, scene);
+        bg = Background.getInstance();
     }
-    
-    public void saveScore(CareTaker careTaker , String level , int score){
+
+    public void saveScore(CareTaker careTaker, String level, int score) {
         Command saveC = new SaveCommand(careTaker, score, level);
         control.setCommand(saveC);
         control.action();
     }
-    
-    public void loadScore(Originator originator , String level , Level l){
+
+    public void loadScore(Originator originator, String level, Level l) {
         Command loadC = new LoadCommand(originator, level, l);
         control.setCommand(loadC);
         control.action();
     }
-    
-    public void shadow(double x ,double y , Level level){
+
+    public void shadow(double x, double y, Level level) {
         gc.setFill(Color.BLUEVIOLET);
         gc.fillOval(x, y, 10, 10);
-        level.setXY(-15,-15);
+        level.setXY(-15, -15);
     }
-    
-    public void time(){
+
+    public void time() {
         timer = new Timer();
         timer.schedule(task, 1000, 1000);
     }
-    
-    public void showTime(){
+
+    public void showTime() {
         gc.setFill(Color.BLACK);
         gc.fillText("Time : " + seconds, 70, 45);
     }
-    
+
     public void media() {
         player.setCycleCount(state);
         player.play();
     }
-    
-    
-    public void redSound(){
+
+    public void redSound() {
         this.sliceSound = new MediaPlayer(new Media(redString));
         sliceSound.play();
     }
-    
-    public void bombSound(){
+
+    public void loseSound() {
+        this.sliceSound = new MediaPlayer(new Media(loserString));
+        sliceSound.play();
+    }
+
+    public void winSound() {
+        this.sliceSound = new MediaPlayer(new Media(congratsString));
+        sliceSound.play();
+    }
+
+    public void beepSound() {
+        this.sliceSound = new MediaPlayer(new Media(beepString));
+        sliceSound.play();
+    }
+
+    public void bombSound() {
         this.sliceSound = new MediaPlayer(new Media(bombString));
         sliceSound.play();
     }
-    
-    public void swordSound(){
+
+    public void swordSound() {
         this.sliceSound = new MediaPlayer(new Media(sliString));
         sliceSound.play();
     }
-    
+
     public void gameState() {
         media();
         time();
@@ -128,49 +153,47 @@ public class Factory {
                     drawMenu();
                 } else if (state == 1) {
                     menu.removeRecs();
-                    if(!first){
+                    if (!first) {
                         try {
                             el.initGame();
-                            first=true;
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
+                            flag = false;
+                            first = true;
+                        } catch (ParserConfigurationException | IOException | SAXException ex) {
                             Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
                     }
                     gotoLevel(el);
                 } else if (state == 2) {
                     menu.removeRecs();
-                    if(!first){
+                    if (!first) {
                         try {
                             ml.initGame();
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
+                            flag = false;
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
                             Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                        first=true;
+                        first = true;
                     }
                     gotoLevel(ml);
                 } else if (state == 3) {
                     menu.removeRecs();
-                    if(!first){
+                    if (!first) {
                         try {
                             hl.initGame();
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
-                            Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
+                            flag = false;
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
                             Logger.getLogger(Factory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                        first=true;
+                        first = true;
                     }
                     gotoLevel(hl);
+                } else if (state == 4) {
+                    menu.removeRecs();
+                    if (!first) {
+                        am.initGame();
+                        first = true;
+                    }
+                    gotoLevel(am);
                 }
             }
         }.start();
@@ -209,8 +232,8 @@ public class Factory {
         score += go.getPoints();
         return score;
     }
-    
-    public void showPause(){
+
+    public void showPause() {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFill(Color.RED);
@@ -221,23 +244,24 @@ public class Factory {
         gc.setFill(Color.BLACK);
         gc.fillText("Score : " + score, 70, 15);
     }
+
     public void showHighScore(int score) {
         gc.setFill(Color.BLACK);
         gc.fillText("High score : " + score, 300, 15);
     }
-    
-    public void drawPause(){
+
+    public void drawPause() {
         gc.drawImage(complete.getWImage(), 300, 125);
         gc.drawImage(complete.getRImage(), 610, 315);
         gc.drawImage(complete.getBImage(), 325, 315);
         gc.drawImage(complete.getSImage(), 460, 300);
     }
-    
-    public void drawP(){
+
+    public void drawP() {
         gc.drawImage(complete.getPImage(), 30, 70);
     }
-    
-    public void drawW(Level level,int score,int highscore){
+
+    public void drawW(Level level, int score, int highscore) {
         gc.drawImage(complete.getWImage(), 300, 125);
         gc.drawImage(complete.getRImage(), 610, 315);
         gc.drawImage(complete.getBImage(), 325, 315);
@@ -247,8 +271,17 @@ public class Factory {
         gc.fillText("You Lost!", 500, 180);
         gc.fillText("Score :" + level.getScore(), 505, 220);
         gc.fillText("Time :" + level.getTime(), 505, 260);
-        if(score > highscore){
+        if (score > highscore) {
             gc.fillText("New Highscore!", 500, 295);
+            if (flag == false) {
+                winSound();
+                flag = true;
+            }
+        } else {
+            if (flag == false) {
+                flag = true;
+                loseSound();
+            }
         }
     }
 
@@ -259,24 +292,30 @@ public class Factory {
         gc.fillRect(110, 150, 180, 50);
         gc.fillRect(94, 250, 212, 50);
         gc.fillRect(110, 350, 180, 50);
+        gc.fillRect(94, 450, 212, 50);
         gc.setFill(Color.BURLYWOOD);
         gc.setFont(Font.font(35));
         gc.fillText("Easy Level", 200, 170);
         gc.fillText("Medium Level", 200, 270);
         gc.fillText("Hard Level", 200, 370);
+        gc.fillText("Arcade Mode", 200, 470);
 
     }
 
     public void drawMenu() {
         menu.Draw();
     }
-    
-    public void showCongrats(){
-        
+
+    public void showCongrats() {
+
     }
 
     public void drawBackGround() {
         bg.drawBackground(gc);
+    }
+
+    public int getState() {
+        return state;
     }
 
     public void setState(int state) {
@@ -290,6 +329,5 @@ public class Factory {
     public int getSeconds() {
         return seconds;
     }
-
 
 }
