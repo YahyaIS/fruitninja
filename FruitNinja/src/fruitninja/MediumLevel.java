@@ -40,7 +40,7 @@ public class MediumLevel implements Level {
     private int highscore;
     String level = "Medium";
     private double x, y;
-    private boolean p=false;
+    private boolean p = false;
 
     public MediumLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
         originator = new Originator();
@@ -68,7 +68,7 @@ public class MediumLevel implements Level {
         factory.drawGx(780, 25);
         factory.drawGx(860, 25);
         factory.drawGx(940, 25);
-        if(p){
+        if (p) {
             factory.drawPause();
             factory.showPause();
             complete.setRec1();
@@ -88,7 +88,7 @@ public class MediumLevel implements Level {
             factory.drawRx(780, 25);
             complete.setRec1();
             complete.setRec2();
-            factory.drawW(this,score,highscore);
+            factory.drawW(this, score, highscore);
             factory.saveScore(careTaker, level, score);
         }
         if (lives > 0 && !p) {
@@ -122,27 +122,23 @@ public class MediumLevel implements Level {
                 (EventHandler<MouseEvent>) e -> {
 
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
-                        p=false;
+                        p = false;
                         factory.setState(0);
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
-                        p=false;
+                        p = false;
                         factory.setState(2);
                         try {
                             initGame();
-                        } catch (ParserConfigurationException ex) {
-                            Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (SAXException ex) {
-                            Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
                             Logger.getLogger(MediumLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                    }else if (complete.getRec3().contains(e.getX(), e.getY())) {
-                        p=true;
-                    }
-                      else if (complete.getRec4().contains(e.getX(), e.getY())) {
+                    } else if (complete.getRec3().contains(e.getX(), e.getY())) {
+                        p = true;
+                    } else if (complete.getRec4().contains(e.getX(), e.getY())) {
                         complete.removeRecs();
-                        p=false;
-                        
+                        factory.setSeconds(time);
+                        p = false;
+
                     }
                 });
 
@@ -158,7 +154,8 @@ public class MediumLevel implements Level {
             actions.updateObjectPlace(go);
             factory.drawObject(go);
         } else if (s[i] == true) {
-            if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM) {
+            if (go.getObjectType() == Fruit.fruit.BANANA || go.getObjectType() == Fruit.fruit.MELON
+                    || go.getObjectType() == Fruit.fruit.APPLE || go.getObjectType() == Fruit.fruit.SUPERFRUIT) {
                 if (f[i] == false) {
                     factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
@@ -172,12 +169,40 @@ public class MediumLevel implements Level {
                     lives--;
                     go.setPosY(563);
                     f[i] = true;
-
                 }
                 actions.updateObjectPlace(go);
             } else if (go.getObjectType() == Bombs.bomb.DEADLY) {
                 factory.redSound();
                 lives = 0;
+            }
+            if (go.getObjectType() == Fruit.fruit.POWERFRUIT) {
+                if (f[i] == false) {
+                    f[i] = true;
+                    if (this.go.getObjectType() != Bombs.bomb.DEADLY && this.go.getObjectType() != Bombs.bomb.NORM) {
+                        s[0] = true;
+                    } else this.go.setPosY(563);
+                    if (this.go1.getObjectType() != Bombs.bomb.DEADLY && this.go1.getObjectType() != Bombs.bomb.NORM) {
+                        s[1] = true;
+                    }else this.go1.setPosY(563);
+                    if (this.go2.getObjectType() != Bombs.bomb.DEADLY && this.go2.getObjectType() != Bombs.bomb.NORM) {
+                        s[2] = true;
+                    } else this.go2.setPosY(563);
+                    if (this.go3.getObjectType() != Bombs.bomb.DEADLY && this.go3.getObjectType() != Bombs.bomb.NORM) {
+                        s[3] = true;
+                    } else this.go3.setPosY(563);
+                }
+                actions.updateHalf((Fruit) go);
+                factory.drawHalf((Fruit) go);
+            }
+            if (go.getObjectType() == Fruit.fruit.LIFEFRUIT) {
+                if (f[i] == false) {
+                    f[i] = true;
+                    if (lives < 3) {
+                        lives++;
+                    }
+                }
+                actions.updateHalf((Fruit) go);
+                factory.drawHalf((Fruit) go);
             }
         }
     }
@@ -187,9 +212,10 @@ public class MediumLevel implements Level {
             if (s[i] == false && (go.getObjectType() == Fruit.fruit.APPLE || go.getObjectType() == Fruit.fruit.BANANA
                     || go.getObjectType() == Fruit.fruit.MELON)) {
                 lives--;
+                factory.beepSound();
             }
             flag[i] = false;
-            go = actions.createGameObject();
+            go = actions.createGameObject(factory.getState());
             s[i] = false;
             f[i] = false;
         }
@@ -198,14 +224,14 @@ public class MediumLevel implements Level {
 
     public void initGame() throws ParserConfigurationException, SAXException, IOException {
         factory.loadScore(originator, level, this);
-        this.go3 = actions.createGameObject();
-        this.go2 = actions.createGameObject();
-        this.go1 = actions.createGameObject();
-        this.go = actions.createGameObject();
+        this.go3 = actions.createGameObject(factory.getState());
+        this.go2 = actions.createGameObject(factory.getState());
+        this.go1 = actions.createGameObject(factory.getState());
+        this.go = actions.createGameObject(factory.getState());
         factory.setSeconds(0);
         score = 0;
         lives = 3;
-        p=false;
+        p = false;
         complete.removeRecs();
         for (int i = 0; i < 4; i++) {
             this.flag[i] = false;

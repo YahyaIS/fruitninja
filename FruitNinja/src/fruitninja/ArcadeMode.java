@@ -3,8 +3,6 @@ package fruitninja;
 import Momento.CareTaker;
 import Momento.Momento;
 import Momento.Originator;
-import fruitninja.Bombs.bomb;
-import fruitninja.Fruit.fruit;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.event.EventHandler;
@@ -13,9 +11,12 @@ import javafx.scene.input.MouseEvent;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public class EasyLevel implements Level {
+public class ArcadeMode implements Level {
 
-    private final String level = "easy";
+    //private final Originator originator;
+    //private final Momento momento;
+    //private final CareTaker careTaker;
+    private int highscore;
     private final Factory factory;
     private final GameActions actions;
     private boolean[] flag;
@@ -24,77 +25,67 @@ public class EasyLevel implements Level {
     private GameObject go;
     private GameObject go1;
     private GameObject go2;
+    private GameObject go3;
+    private GameObject go4;
+    private GameObject go5;
     private final Scene scene;
     private final Complete complete;
-    private int score, lives, time;
-    private final Originator originator;
-    private final Momento momento;
-    private final CareTaker careTaker;
-    private int highscore;
+    private int score, time;
+    String level = "Arcade";
     private double x, y;
     private boolean p = false;
 
-    public EasyLevel(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
-        originator = new Originator();
-        momento = new Momento();
-        careTaker = new CareTaker();
-        this.lives = 3;
+    public ArcadeMode(Factory factory, Scene scene) throws ParserConfigurationException, SAXException, IOException {
+//        originator = new Originator();
+//        momento = new Momento();
+//        careTaker = new CareTaker();
+        this.time = 60;
         this.score = 0;
-        this.flag = new boolean[3];
-        this.s = new boolean[3];
-        this.f = new boolean[3];
+        this.flag = new boolean[6];
+        this.s = new boolean[6];
+        this.f = new boolean[6];
         this.actions = new TheActions();
         this.factory = factory;
-        this.complete = new Complete();
         this.scene = scene;
-        this.factory.loadScore(this.originator, this.level, this);
+        this.complete = new Complete();
+//        this.factory.loadScore(this.originator, this.level, this);
     }
 
     @Override
     public void manageLevel() {
-
         factory.clearCanvas();
         factory.drawBackGround();
         factory.showScore(score);
-        factory.showHighScore(highscore);
         factory.drawP();
-        factory.drawGx(780, 25);
-        factory.drawGx(860, 25);
-        factory.drawGx(940, 25);
+        //factory.showHighScore(highscore);
         if (p) {
             factory.drawPause();
             factory.showPause();
             complete.setRec1();
             complete.setRec2();
         }
-        if (lives == 2) {
-            factory.drawRx(940, 25);
-        } else if (lives == 1) {
-            factory.drawRx(940, 25);
-            factory.drawRx(860, 25);
-        } else if (lives == 0) {
-            momento.setHighscore(score);
-            factory.drawRx(940, 25);
-            factory.drawRx(860, 25);
-            factory.drawRx(780, 25);
+        if (time == 0) {
+            //  momento.setHighscore(score);
             complete.setRec1();
             complete.setRec2();
             factory.drawW(this, score, highscore);
-            factory.saveScore(careTaker, level, score);
+            //       factory.saveScore(careTaker, level, score);
         }
-        if (lives > 0 && !p) {
-            try {
-                factory.showTime();
-                time = factory.getSeconds();
-                objectMotion(go, 0);
-                objectMotion(go1, 1);
-                objectMotion(go2, 2);
-                go = checkEnd(go, 0);
-                go1 = checkEnd(go1, 1);
-                go2 = checkEnd(go2, 2);
-            } catch (ParserConfigurationException | IOException | SAXException ex) {
-                Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
+        if (time > 0 && !p) {
+            factory.showTime();
+            time = factory.getSeconds();
+            objectMotion(go, 0);
+            objectMotion(go1, 1);
+            objectMotion(go2, 2);
+            objectMotion(go3, 3);
+            objectMotion(go4, 4);
+            objectMotion(go5, 5);
+            go = checkEnd(go, 0);
+            go1 = checkEnd(go1, 1);
+            go2 = checkEnd(go2, 2);
+            go3 = checkEnd(go3, 3);
+            go4 = checkEnd(go4, 4);
+            go5 = checkEnd(go5, 5);
         }
         scene.setOnMouseDragged(
                 (EventHandler<MouseEvent>) e -> {
@@ -102,37 +93,37 @@ public class EasyLevel implements Level {
                     y = e.getY();
                     if (go.getRec().contains(e.getX(), e.getY())) {
                         s[0] = true;
-                    }
-                    if (go1.getRec().contains(e.getX(), e.getY())) {
+                    } else if (go1.getRec().contains(e.getX(), e.getY())) {
                         s[1] = true;
-                    }
-                    if (go2.getRec().contains(e.getX(), e.getY())) {
+                    } else if (go2.getRec().contains(e.getX(), e.getY())) {
                         s[2] = true;
+                    } else if (go3.getRec().contains(e.getX(), e.getY())) {
+                        s[3] = true;
+                    } else if (go4.getRec().contains(e.getX(), e.getY())) {
+                        s[4] = true;
+                    } else if (go5.getRec().contains(e.getX(), e.getY())) {
+                        s[5] = true;
                     }
                 });
         factory.shadow(x, y, this);
         scene.setOnMouseClicked(
                 (EventHandler<MouseEvent>) e -> {
                     if (complete.getRec1().contains(e.getX(), e.getY())) {
+                        p = false;
                         factory.setState(0);
-                        p = false;
                     } else if (complete.getRec2().contains(e.getX(), e.getY())) {
-                        factory.setState(1);
                         p = false;
-                        try {
-                            initGame();
-                        } catch (ParserConfigurationException | IOException | SAXException ex) {
-                            Logger.getLogger(EasyLevel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
+                        factory.setState(4);
+                        initGame();
                     } else if (complete.getRec3().contains(e.getX(), e.getY())) {
                         p = true;
                     } else if (complete.getRec4().contains(e.getX(), e.getY())) {
                         complete.removeRecs();
                         factory.setSeconds(time);
                         p = false;
+
                     }
                 });
-
     }
 
     public void objectMotion(GameObject go, int i) {
@@ -144,9 +135,9 @@ public class EasyLevel implements Level {
         if (s[i] == false) {
             actions.updateObjectPlace(go);
             factory.drawObject(go);
+
         } else if (s[i] == true) {
-            if (go.getObjectType() == fruit.BANANA || go.getObjectType() == fruit.MELON
-                    || go.getObjectType() == fruit.APPLE || go.getObjectType() == fruit.SUPERFRUIT) {
+            if (go.getObjectType() != Bombs.bomb.DEADLY && go.getObjectType() != Bombs.bomb.NORM && go.getObjectType() != Fruit.fruit.POWERFRUIT) {
                 if (f[i] == false) {
                     factory.swordSound();
                     score = factory.setScore((Fruit) go, score);
@@ -155,41 +146,37 @@ public class EasyLevel implements Level {
                 actions.updateHalf((Fruit) go);
                 factory.drawHalf((Fruit) go);
             }
-            if (go.getObjectType() == bomb.NORM) {
+            if (go.getObjectType() == Bombs.bomb.NORM) {
                 if (f[i] == false) {
                     factory.bombSound();
-                    lives--;
                     go.setPosY(563);
                     f[i] = true;
-
                 }
                 actions.updateObjectPlace(go);
             }
-            if (go.getObjectType() == bomb.DEADLY) {
+            if (go.getObjectType() == Bombs.bomb.DEADLY) {
                 factory.redSound();
-                lives = 0;
             }
-            if (go.getObjectType() == fruit.POWERFRUIT) {
+            if (go.getObjectType() == Fruit.fruit.POWERFRUIT) {
                 if (f[i] == false) {
                     f[i] = true;
-                    if (this.go.getObjectType() != bomb.DEADLY && this.go.getObjectType() != bomb.NORM) {
+                    if (this.go.getObjectType() != Bombs.bomb.DEADLY && this.go.getObjectType() != Bombs.bomb.NORM) {
                         s[0] = true;
-                    } else this.go.setPosY(563);
-                    if (this.go1.getObjectType() != bomb.DEADLY && this.go1.getObjectType() != bomb.NORM) {
+                    }
+                    if (this.go1.getObjectType() != Bombs.bomb.DEADLY && this.go1.getObjectType() != Bombs.bomb.NORM) {
                         s[1] = true;
-                    } else this.go1.setPosY(563);
-                    if (this.go2.getObjectType() != bomb.DEADLY && this.go2.getObjectType() != bomb.NORM) {
+                    }
+                    if (this.go2.getObjectType() != Bombs.bomb.DEADLY && this.go2.getObjectType() != Bombs.bomb.NORM) {
                         s[2] = true;
-                    } else this.go2.setPosY(563);
-                }
-                actions.updateHalf((Fruit) go);
-                factory.drawHalf((Fruit) go);
-            }
-            if (go.getObjectType() == fruit.LIFEFRUIT) {
-                if (f[i] == false) {
-                    f[i] = true;
-                    if (lives < 3) {
-                        lives++;
+                    }
+                    if (this.go3.getObjectType() != Bombs.bomb.DEADLY && this.go3.getObjectType() != Bombs.bomb.NORM) {
+                        s[3] = true;
+                    }
+                    if (this.go4.getObjectType() != Bombs.bomb.DEADLY && this.go4.getObjectType() != Bombs.bomb.NORM) {
+                        s[4] = true;
+                    }
+                    if (this.go5.getObjectType() != Bombs.bomb.DEADLY && this.go5.getObjectType() != Bombs.bomb.NORM) {
+                        s[5] = true;
                     }
                 }
                 actions.updateHalf((Fruit) go);
@@ -198,33 +185,33 @@ public class EasyLevel implements Level {
         }
     }
 
-    public GameObject checkEnd(GameObject go, int i) throws ParserConfigurationException, IOException, SAXException {
+    public GameObject checkEnd(GameObject go, int i) {
         if (go.getPosY() > 562) {
-            if (s[i] == false && (go.getObjectType() == fruit.APPLE || go.getObjectType() == fruit.BANANA
-                    || go.getObjectType() == fruit.MELON)) {
-                lives--;
-                factory.beepSound();
+            if (s[i] == false && (go.getObjectType() == Fruit.fruit.APPLE || go.getObjectType() == Fruit.fruit.BANANA
+                    || go.getObjectType() == Fruit.fruit.MELON)) {
             }
             flag[i] = false;
             go = actions.createGameObject(factory.getState());
             s[i] = false;
             f[i] = false;
-
         }
         return go;
     }
 
-    public void initGame() throws ParserConfigurationException, IOException, SAXException {
-        factory.loadScore(originator, level, this);
+    public void initGame() {
+        //factory.loadScore(originator, level, this);
+        this.go5 = actions.createGameObject(factory.getState());
+        this.go4 = actions.createGameObject(factory.getState());
+        this.go3 = actions.createGameObject(factory.getState());
         this.go2 = actions.createGameObject(factory.getState());
         this.go1 = actions.createGameObject(factory.getState());
         this.go = actions.createGameObject(factory.getState());
-        factory.setSeconds(0);
+        factory.setSeconds(60);
         score = 0;
-        lives = 3;
+        time = 60;
         p = false;
         complete.removeRecs();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             this.flag[i] = false;
             this.s[i] = false;
             this.f[i] = false;
@@ -248,8 +235,8 @@ public class EasyLevel implements Level {
         return go2;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public GameObject getGo3() {
+        return go3;
     }
 
     @Override

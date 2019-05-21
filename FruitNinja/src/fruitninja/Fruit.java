@@ -76,7 +76,7 @@ public abstract class Fruit implements GameObject {
 
     enum fruit {
 
-        MELON, BANANA, APPLE, SUPERFRUIT;
+        MELON, BANANA, APPLE, SUPERFRUIT, POWERFRUIT, LIFEFRUIT;
     }
 
     @Override

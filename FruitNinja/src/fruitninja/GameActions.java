@@ -2,7 +2,7 @@
 package fruitninja;
 
 public interface GameActions {
-    public GameObject createGameObject();
+    public GameObject createGameObject(int x);
     public void updateObjectPlace(GameObject go);
     public void updateHalf(Fruit go);
     public void setDeltaX(float x);
