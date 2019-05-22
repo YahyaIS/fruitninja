@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="FruitNinja">
+  <ClassDiagramComponents>
+    <Interface name="Command" package="command" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Methods>
+        <Method name="execute" returnType="void" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Class name="Invoker" package="command" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="command" type="Command" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="setCommand" returnType="void" visibility="public">
+          <Argument type="Command" name="command"/>
+        </Method>
+        <Method name="action" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="LoadCommand" package="command" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="originator" type="Originator" visibility="package"/>
+        <Field name="level" type="String" visibility="package"/>
+        <Field name="l" type="Level" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Originator" name="originator"/>
+          <Argument type="String" name="level"/>
+          <Argument type="Level" name="l"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="execute" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="SaveCommand" package="command" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="careTaker" type="CareTaker" visibility="package"/>
+        <Field name="score" type="int" visibility="package"/>
+        <Field name="level" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="CareTaker" name="careTaker"/>
+          <Argument type="int" name="score"/>
+          <Argument type="String" name="level"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="execute" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Apple" package="fruitninja" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="apple" type="Fruit.fruit" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ArcadeMode" package="fruitninja" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="originator" type="Originator" visibility="private" isFinal="true"/>
+        <Field name="momento" type="Momento" visibility="private" isFinal="true"/>
+        <Field name="careTaker" type="CareTaker" visibility="private" isFinal="true"/>
+        <Field name="highscore" type="int" visibility="private"/>
+        <Field name="factory" type="Factory" visibility="private" isFinal="true"/>
+        <Field name="actions" type="GameActions" visibility="private" isFinal="true"/>
+        <Field name="flag" type="boolean[]" visibility="private"/>
+        <Field name="s" type="boolean[]" visibility="private"/>
+        <Field name="f" type="boolean[]" visibility="private"/>
+        <Field name="go" type="GameObject" visibility="private"/>
+        <Field name="go1" type="GameObject" visibility="private"/>
+        <Field name="go2" type="GameObject" visibility="private"/>
+        <Field name="go3" type="GameObject" visibility="private"/>
+        <Field name="go4" type="GameObject" visibility="private"/>
+        <Field name="go5" type="GameObject" visibility="private"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="complete" type="Complete" visibility="private" isFinal="true"/>
+        <Field name="score" type="int" visibility="private"/>
+        <Field name="level" type="String" visibility="package"/>
+        <Field name="x" type="double" visibility="private"/>
+        <Field name="p" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Factory" name="factory"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="manageLevel" returnType="void" visibility="public"/>
+        <Method name="objectMotion" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="checkEnd" returnType="GameObject" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="initGame" returnType="void" visibility="public"/>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="getGo" returnType="GameObject" visibility="public"/>
+        <Method name="getGo1" returnType="GameObject" visibility="public"/>
+        <Method name="getGo2" returnType="GameObject" visibility="public"/>
+        <Method name="getGo3" returnType="GameObject" visibility="public"/>
+        <Method name="getTime" returnType="int" visibility="public"/>
+        <Method name="setHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+        </Method>
+        <Method name="setXY" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Background" package="fruitninja" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="instance" type="Background" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="private"/>
+      </Constructors>
+      <Methods>
+        <Method name="getInstance" returnType="Background" visibility="public" isStatic="true"/>
+        <Method name="drawBackground" returnType="void" visibility="public">
+          <Argument type="GraphicsContext" name="gc"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Banana" package="fruitninja" visibility="public" xPosition="2120.0" yPosition="20.0">
+      <Fields>
+        <Field name="banana" type="fruit" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Bombs" package="fruitninja" visibility="public" isAbstract="true" xPosition="20.0" yPosition="420.0">
+      <Fields>
+        <Field name="posX" type="int" visibility="package"/>
+        <Field name="rec" type="Rectangle2D" visibility="package"/>
+        <Field name="bi" type="BufferedImage" visibility="package"/>
+        <Field name="deltaX" type="float" visibility="package"/>
+        <Field name="rand" type="float" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setRec" returnType="void" visibility="public"/>
+        <Method name="getRec" returnType="Rectangle2D" visibility="public"/>
+        <Method name="getRand" returnType="float" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public" isAbstract="true"/>
+        <Method name="setPosX" returnType="void" visibility="public">
+          <Argument type="float" name="x"/>
+        </Method>
+        <Method name="setPosY" returnType="void" visibility="public">
+          <Argument type="float" name="y"/>
+        </Method>
+        <Method name="getPosX" returnType="int" visibility="public"/>
+        <Method name="getPosY" returnType="int" visibility="public"/>
+        <Method name="getDeltaX" returnType="int" visibility="public"/>
+        <Method name="getDeltaY" returnType="int" visibility="public"/>
+        <Method name="getDownY" returnType="int" visibility="public"/>
+        <Method name="setDeltaY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Complete" package="fruitninja" visibility="public" xPosition="320.0" yPosition="420.0">
+      <Fields>
+        <Field name="bw" type="BufferedImage" visibility="private"/>
+        <Field name="br" type="BufferedImage" visibility="private"/>
+        <Field name="bb" type="BufferedImage" visibility="private"/>
+        <Field name="bp" type="BufferedImage" visibility="private"/>
+        <Field name="bs" type="BufferedImage" visibility="private"/>
+        <Field name="rec1" type="Rectangle2D" visibility="private"/>
+        <Field name="rec2" type="Rectangle2D" visibility="private"/>
+        <Field name="rec3" type="Rectangle2D" visibility="private"/>
+        <Field name="rec4" type="Rectangle2D" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getWImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getRImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getBImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getPImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getSImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="setRec1" returnType="void" visibility="public"/>
+        <Method name="setRec2" returnType="void" visibility="public"/>
+        <Method name="setRec3" returnType="void" visibility="public">
+          <Argument type="Rectangle2D" name="rec3"/>
+        </Method>
+        <Method name="removeRecs" returnType="void" visibility="public"/>
+        <Method name="getRec1" returnType="Rectangle2D" visibility="public"/>
+        <Method name="getRec2" returnType="Rectangle2D" visibility="public"/>
+        <Method name="getRec3" returnType="Rectangle2D" visibility="public"/>
+        <Method name="getRec4" returnType="Rectangle2D" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EasyLevel" package="fruitninja" visibility="public" xPosition="620.0" yPosition="420.0">
+      <Fields>
+        <Field name="level" type="String" visibility="private" isFinal="true"/>
+        <Field name="factory" type="Factory" visibility="private" isFinal="true"/>
+        <Field name="actions" type="GameActions" visibility="private" isFinal="true"/>
+        <Field name="flag" type="boolean[]" visibility="private"/>
+        <Field name="s" type="boolean[]" visibility="private"/>
+        <Field name="f" type="boolean[]" visibility="private"/>
+        <Field name="go" type="GameObject" visibility="private"/>
+        <Field name="go1" type="GameObject" visibility="private"/>
+        <Field name="go2" type="GameObject" visibility="private"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="complete" type="Complete" visibility="private" isFinal="true"/>
+        <Field name="score" type="int" visibility="private"/>
+        <Field name="originator" type="Originator" visibility="private" isFinal="true"/>
+        <Field name="momento" type="Momento" visibility="private" isFinal="true"/>
+        <Field name="careTaker" type="CareTaker" visibility="private" isFinal="true"/>
+        <Field name="highscore" type="int" visibility="private"/>
+        <Field name="x" type="double" visibility="private"/>
+        <Field name="p" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Factory" name="factory"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="manageLevel" returnType="void" visibility="public"/>
+        <Method name="objectMotion" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="checkEnd" returnType="GameObject" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="initGame" returnType="void" visibility="public"/>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="getGo" returnType="GameObject" visibility="public"/>
+        <Method name="getGo1" returnType="GameObject" visibility="public"/>
+        <Method name="getGo2" returnType="GameObject" visibility="public"/>
+        <Method name="setLives" returnType="void" visibility="public">
+          <Argument type="int" name="lives"/>
+        </Method>
+        <Method name="getTime" returnType="int" visibility="public"/>
+        <Method name="setHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+        </Method>
+        <Method name="setXY" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Factory" package="fruitninja" visibility="public" xPosition="920.0" yPosition="420.0">
+      <Fields>
+        <Field name="control" type="Invoker" visibility="private" isFinal="true"/>
+        <Field name="uriString" type="String" visibility="private" isFinal="true"/>
+        <Field name="player" type="MediaPlayer" visibility="private" isFinal="true"/>
+        <Field name="sliceSound" type="MediaPlayer" visibility="private"/>
+        <Field name="gc" type="GraphicsContext" visibility="private" isFinal="true"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="menu" type="Menu" visibility="private" isFinal="true"/>
+        <Field name="warnning" type="Warnning" visibility="private" isFinal="true"/>
+        <Field name="state" type="int" visibility="private"/>
+        <Field name="el" type="EasyLevel" visibility="private" isFinal="true"/>
+        <Field name="ml" type="MediumLevel" visibility="private" isFinal="true"/>
+        <Field name="hl" type="HardLevel" visibility="private" isFinal="true"/>
+        <Field name="am" type="ArcadeMode" visibility="private" isFinal="true"/>
+        <Field name="first" type="boolean" visibility="private"/>
+        <Field name="timer" type="Timer" visibility="private"/>
+        <Field name="seconds" type="int" visibility="private"/>
+        <Field name="complete" type="Complete" visibility="private" isFinal="true"/>
+        <Field name="bg" type="Background" visibility="private" isFinal="true"/>
+        <Field name="flag" type="Boolean" visibility="private"/>
+        <Field name="task" type="TimerTask" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GraphicsContext" name="gc"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="saveScore" returnType="void" visibility="public">
+          <Argument type="CareTaker" name="careTaker"/>
+          <Argument type="String" name="level"/>
+          <Argument type="int" name="score"/>
+        </Method>
+        <Method name="loadScore" returnType="void" visibility="public">
+          <Argument type="Originator" name="originator"/>
+          <Argument type="String" name="level"/>
+          <Argument type="Level" name="l"/>
+        </Method>
+        <Method name="shadow" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+          <Argument type="Level" name="level"/>
+        </Method>
+        <Method name="time" returnType="void" visibility="public"/>
+        <Method name="showTime" returnType="void" visibility="public"/>
+        <Method name="media" returnType="void" visibility="public"/>
+        <Method name="redSound" returnType="void" visibility="public"/>
+        <Method name="loseSound" returnType="void" visibility="public"/>
+        <Method name="winSound" returnType="void" visibility="public"/>
+        <Method name="beepSound" returnType="void" visibility="public"/>
+        <Method name="bombSound" returnType="void" visibility="public"/>
+        <Method name="swordSound" returnType="void" visibility="public"/>
+        <Method name="gameState" returnType="void" visibility="public"/>
+        <Method name="setFirst" returnType="void" visibility="public">
+          <Argument type="boolean" name="first"/>
+        </Method>
+        <Method name="gotoLevel" returnType="void" visibility="public">
+          <Argument type="Level" name="level"/>
+        </Method>
+        <Method name="clearCanvas" returnType="void" visibility="public"/>
+        <Method name="drawObject" returnType="void" visibility="public">
+          <Argument type="GameObject" name="object"/>
+        </Method>
+        <Method name="drawHalf" returnType="void" visibility="public">
+          <Argument type="Fruit" name="object"/>
+        </Method>
+        <Method name="drawRx" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="drawGx" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="setScore" returnType="int" visibility="public">
+          <Argument type="Fruit" name="go"/>
+          <Argument type="int" name="score"/>
+        </Method>
+        <Method name="showPause" returnType="void" visibility="public"/>
+        <Method name="showScore" returnType="void" visibility="public">
+          <Argument type="int" name="score"/>
+        </Method>
+        <Method name="showHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="score"/>
+        </Method>
+        <Method name="drawPause" returnType="void" visibility="public"/>
+        <Method name="drawP" returnType="void" visibility="public"/>
+        <Method name="drawW" returnType="void" visibility="public">
+          <Argument type="Level" name="level"/>
+          <Argument type="int" name="score"/>
+          <Argument type="int" name="highscore"/>
+        </Method>
+        <Method name="options" returnType="void" visibility="public"/>
+        <Method name="drawMenu" returnType="void" visibility="public"/>
+        <Method name="showCongrats" returnType="void" visibility="public"/>
+        <Method name="drawBackGround" returnType="void" visibility="public"/>
+        <Method name="getState" returnType="int" visibility="public"/>
+        <Method name="setState" returnType="void" visibility="public">
+          <Argument type="int" name="state"/>
+        </Method>
+        <Method name="setSeconds" returnType="void" visibility="public">
+          <Argument type="int" name="seconds"/>
+        </Method>
+        <Method name="getSeconds" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Fruit" package="fruitninja" visibility="public" isAbstract="true" xPosition="1220.0" yPosition="420.0">
+      <Fields>
+        <Field name="rec" type="Rectangle2D" visibility="package"/>
+        <Field name="bi" type="BufferedImage" visibility="package"/>
+        <Field name="bi1" type="BufferedImage" visibility="package"/>
+        <Field name="bi2" type="BufferedImage" visibility="package"/>
+        <Field name="points" type="int" visibility="package"/>
+        <Field name="posX" type="int" visibility="package"/>
+        <Field name="rand" type="float" visibility="package"/>
+        <Field name="deltaX" type="float" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getPoints" returnType="int" visibility="public"/>
+        <Method name="getHalfX1" returnType="int" visibility="public"/>
+        <Method name="setHalfX1" returnType="void" visibility="public">
+          <Argument type="int" name="halfX1"/>
+        </Method>
+        <Method name="getHalfX2" returnType="int" visibility="public"/>
+        <Method name="setHalfX2" returnType="void" visibility="public">
+          <Argument type="int" name="halfX2"/>
+        </Method>
+        <Method name="initHalf" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="setRec" returnType="void" visibility="public"/>
+        <Method name="getRec" returnType="Rectangle2D" visibility="public"/>
+        <Method name="getRand" returnType="float" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public" isAbstract="true"/>
+        <Method name="setPosX" returnType="void" visibility="public">
+          <Argument type="float" name="x"/>
+        </Method>
+        <Method name="setPosY" returnType="void" visibility="public">
+          <Argument type="float" name="y"/>
+        </Method>
+        <Method name="getPosX" returnType="int" visibility="public"/>
+        <Method name="getPosY" returnType="int" visibility="public"/>
+        <Method name="getDownY" returnType="int" visibility="public"/>
+        <Method name="getDeltaX" returnType="int" visibility="public"/>
+        <Method name="getDeltaY" returnType="int" visibility="public"/>
+        <Method name="setDeltaY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="FruitNinja" package="fruitninja" visibility="public" xPosition="1520.0" yPosition="420.0">
+      <Fields>
+        <Field name="originator" type="Originator" visibility="package"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+        <Method name="start" returnType="void" visibility="public">
+          <Argument type="Stage" name="stage"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="GameActions" package="fruitninja" visibility="public" xPosition="1820.0" yPosition="420.0">
+      <Methods>
+        <Method name="createGameObject" returnType="GameObject" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="updateObjectPlace" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+        </Method>
+        <Method name="updateHalf" returnType="void" visibility="public">
+          <Argument type="Fruit" name="go"/>
+        </Method>
+        <Method name="setDeltaX" returnType="void" visibility="public">
+          <Argument type="float" name="x"/>
+        </Method>
+        <Method name="setDeltaY" returnType="void" visibility="public">
+          <Argument type="float" name="y"/>
+        </Method>
+        <Method name="saveGame" returnType="void" visibility="public"/>
+        <Method name="loadGame" returnType="void" visibility="public"/>
+        <Method name="ResetGame" returnType="void" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Interface name="GameObject" package="fruitninja" visibility="public" xPosition="2120.0" yPosition="420.0">
+      <Methods>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="setPosX" returnType="void" visibility="public">
+          <Argument type="float" name="x"/>
+        </Method>
+        <Method name="setPosY" returnType="void" visibility="public">
+          <Argument type="float" name="y"/>
+        </Method>
+        <Method name="getDownY" returnType="int" visibility="public"/>
+        <Method name="getPosX" returnType="int" visibility="public"/>
+        <Method name="getPosY" returnType="int" visibility="public"/>
+        <Method name="getDeltaX" returnType="int" visibility="public"/>
+        <Method name="getDeltaY" returnType="int" visibility="public"/>
+        <Method name="setDeltaY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="getRand" returnType="float" visibility="public"/>
+        <Method name="setRec" returnType="void" visibility="public"/>
+        <Method name="getRec" returnType="Rectangle2D" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Class name="HardLevel" package="fruitninja" visibility="public" xPosition="20.0" yPosition="820.0">
+      <Fields>
+        <Field name="level" type="String" visibility="private" isFinal="true"/>
+        <Field name="factory" type="Factory" visibility="private" isFinal="true"/>
+        <Field name="actions" type="GameActions" visibility="private" isFinal="true"/>
+        <Field name="flag" type="boolean[]" visibility="private"/>
+        <Field name="s" type="boolean[]" visibility="private"/>
+        <Field name="f" type="boolean[]" visibility="private"/>
+        <Field name="go" type="GameObject" visibility="private"/>
+        <Field name="go1" type="GameObject" visibility="private"/>
+        <Field name="go2" type="GameObject" visibility="private"/>
+        <Field name="go3" type="GameObject" visibility="private"/>
+        <Field name="go4" type="GameObject" visibility="private"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="complete" type="Complete" visibility="private" isFinal="true"/>
+        <Field name="score" type="int" visibility="private"/>
+        <Field name="originator" type="Originator" visibility="private" isFinal="true"/>
+        <Field name="momento" type="Momento" visibility="private" isFinal="true"/>
+        <Field name="careTaker" type="CareTaker" visibility="private" isFinal="true"/>
+        <Field name="highscore" type="int" visibility="private"/>
+        <Field name="x" type="double" visibility="private"/>
+        <Field name="p" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Factory" name="factory"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="manageLevel" returnType="void" visibility="public"/>
+        <Method name="objectMotion" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="checkEnd" returnType="GameObject" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="initGame" returnType="void" visibility="public"/>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="getGo" returnType="GameObject" visibility="public"/>
+        <Method name="getGo1" returnType="GameObject" visibility="public"/>
+        <Method name="getGo2" returnType="GameObject" visibility="public"/>
+        <Method name="setLives" returnType="void" visibility="public">
+          <Argument type="int" name="lives"/>
+        </Method>
+        <Method name="getTime" returnType="int" visibility="public"/>
+        <Method name="setHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+        </Method>
+        <Method name="setXY" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="Level" package="fruitninja" visibility="public" xPosition="320.0" yPosition="820.0">
+      <Methods>
+        <Method name="manageLevel" returnType="void" visibility="public"/>
+        <Method name="setHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="restore"/>
+        </Method>
+        <Method name="setXY" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Method>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="getTime" returnType="int" visibility="public"/>
+      </Methods>
+    </Interface>
+    <Class name="LifeFruit" package="fruitninja" visibility="public" xPosition="620.0" yPosition="820.0">
+      <Fields>
+        <Field name="lifeFruit" type="Fruit.fruit" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="MediumLevel" package="fruitninja" visibility="public" xPosition="920.0" yPosition="820.0">
+      <Fields>
+        <Field name="factory" type="Factory" visibility="private" isFinal="true"/>
+        <Field name="originator" type="Originator" visibility="private" isFinal="true"/>
+        <Field name="momento" type="Momento" visibility="private" isFinal="true"/>
+        <Field name="careTaker" type="CareTaker" visibility="private" isFinal="true"/>
+        <Field name="actions" type="GameActions" visibility="private" isFinal="true"/>
+        <Field name="flag" type="boolean[]" visibility="private"/>
+        <Field name="s" type="boolean[]" visibility="private"/>
+        <Field name="f" type="boolean[]" visibility="private"/>
+        <Field name="go" type="GameObject" visibility="private"/>
+        <Field name="go1" type="GameObject" visibility="private"/>
+        <Field name="go2" type="GameObject" visibility="private"/>
+        <Field name="go3" type="GameObject" visibility="private"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="score" type="int" visibility="private"/>
+        <Field name="complete" type="Complete" visibility="private" isFinal="true"/>
+        <Field name="highscore" type="int" visibility="private"/>
+        <Field name="level" type="String" visibility="package"/>
+        <Field name="x" type="double" visibility="private"/>
+        <Field name="p" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Factory" name="factory"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="manageLevel" returnType="void" visibility="public"/>
+        <Method name="objectMotion" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="checkEnd" returnType="GameObject" visibility="public">
+          <Argument type="GameObject" name="go"/>
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="initGame" returnType="void" visibility="public"/>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="getGo" returnType="GameObject" visibility="public"/>
+        <Method name="getGo1" returnType="GameObject" visibility="public"/>
+        <Method name="getGo2" returnType="GameObject" visibility="public"/>
+        <Method name="getGo3" returnType="GameObject" visibility="public"/>
+        <Method name="setLives" returnType="void" visibility="public">
+          <Argument type="int" name="lives"/>
+        </Method>
+        <Method name="getTime" returnType="int" visibility="public"/>
+        <Method name="setHighScore" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+        </Method>
+        <Method name="setXY" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Melon" package="fruitninja" visibility="public" xPosition="1220.0" yPosition="820.0">
+      <Fields>
+        <Field name="melon" type="fruit" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Menu" package="fruitninja" visibility="public" xPosition="1520.0" yPosition="820.0">
+      <Fields>
+        <Field name="factory" type="Factory" visibility="private" isFinal="true"/>
+        <Field name="gc" type="GraphicsContext" visibility="private" isFinal="true"/>
+        <Field name="scene" type="Scene" visibility="private" isFinal="true"/>
+        <Field name="rec1" type="Rectangle2D" visibility="private"/>
+        <Field name="rec2" type="Rectangle2D" visibility="private"/>
+        <Field name="rec3" type="Rectangle2D" visibility="private"/>
+        <Field name="rec4" type="Rectangle2D" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Factory" name="factory"/>
+          <Argument type="GraphicsContext" name="gc"/>
+          <Argument type="Scene" name="scene"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="Draw" returnType="void" visibility="public"/>
+        <Method name="setRecs" returnType="void" visibility="public"/>
+        <Method name="removeRecs" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="PowerFruit" package="fruitninja" visibility="public" xPosition="1820.0" yPosition="820.0">
+      <Fields>
+        <Field name="powerFruit" type="Fruit.fruit" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RedBomb" package="fruitninja" visibility="public" xPosition="2120.0" yPosition="820.0">
+      <Fields>
+        <Field name="redbomb" type="bomb" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RegularBomb" package="fruitninja" visibility="public" xPosition="20.0" yPosition="1220.0">
+      <Fields>
+        <Field name="regbomb" type="bomb" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="SuperFruit1" package="fruitninja" visibility="public" xPosition="320.0" yPosition="1220.0">
+      <Fields>
+        <Field name="superFruit" type="Fruit.fruit" visibility="private"/>
+        <Field name="bi" type="BufferedImage" visibility="private"/>
+        <Field name="bi1" type="BufferedImage" visibility="private"/>
+        <Field name="bi2" type="BufferedImage" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="SuperFruit2" package="fruitninja" visibility="public" xPosition="620.0" yPosition="1220.0">
+      <Fields>
+        <Field name="superFruit" type="Fruit.fruit" visibility="private"/>
+        <Field name="bi" type="BufferedImage" visibility="private"/>
+        <Field name="bi1" type="BufferedImage" visibility="private"/>
+        <Field name="bi2" type="BufferedImage" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage1" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getImage2" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getObjectType" returnType="Enum" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="TheActions" package="fruitninja" visibility="public" xPosition="920.0" yPosition="1220.0">
+      <Fields>
+        <Field name="deltaX" type="float" visibility="package"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="createGameObject" returnType="GameObject" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="updateObjectPlace" returnType="void" visibility="public">
+          <Argument type="GameObject" name="go"/>
+        </Method>
+        <Method name="updateHalf" returnType="void" visibility="public">
+          <Argument type="Fruit" name="go"/>
+        </Method>
+        <Method name="getDeltaX" returnType="float" visibility="public"/>
+        <Method name="setDeltaX" returnType="void" visibility="public">
+          <Argument type="float" name="deltaX"/>
+        </Method>
+        <Method name="getDeltaY" returnType="float" visibility="public"/>
+        <Method name="setDeltaY" returnType="void" visibility="public">
+          <Argument type="float" name="deltaY"/>
+        </Method>
+        <Method name="saveGame" returnType="void" visibility="public"/>
+        <Method name="loadGame" returnType="void" visibility="public"/>
+        <Method name="ResetGame" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Warnning" package="fruitninja" visibility="public" xPosition="1220.0" yPosition="1220.0">
+      <Fields>
+        <Field name="br" type="BufferedImage" visibility="private"/>
+        <Field name="bg" type="BufferedImage" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getGImage" returnType="javafx.scene.image.Image" visibility="public"/>
+        <Method name="getRImage" returnType="javafx.scene.image.Image" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="CareTaker" package="Momento" visibility="public" xPosition="1520.0" yPosition="1220.0">
+      <Fields>
+        <Field name="momento" type="Momento" visibility="package"/>
+        <Field name="originator" type="Originator" visibility="package"/>
+        <Field name="high" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="addMomento" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+          <Argument type="String" name="level"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Momento" package="Momento" visibility="public" xPosition="1820.0" yPosition="1220.0">
+      <Fields>
+        <Field name="highscore" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getHighscore" returnType="int" visibility="public"/>
+        <Method name="setHighscore" returnType="void" visibility="public">
+          <Argument type="int" name="highscore"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Originator" package="Momento" visibility="public" xPosition="2120.0" yPosition="1220.0">
+      <Fields>
+        <Field name="momento" type="Momento" visibility="package"/>
+        <Field name="highscoreStoI" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="save" returnType="void" visibility="public">
+          <Argument type="String" name="level"/>
+          <Argument type="int" name="high"/>
+        </Method>
+        <Method name="restore" returnType="int" visibility="public">
+          <Argument type="String" name="level"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="fruitninja.ArcadeMode" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.HardLevel" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="l" source="command.LoadCommand" target="fruitninja.Level" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="actions" source="fruitninja.ArcadeMode" target="fruitninja.GameActions" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.Factory" target="Momento.Originator" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.SuperFruit1" target="fruitninja.Fruit"/>
+    <IsRelation name="is" source="fruitninja.Banana" target="fruitninja.Fruit"/>
+    <HasRelation name="go" source="fruitninja.HardLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go2" source="fruitninja.MediumLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.LifeFruit" target="fruitninja.Fruit"/>
+    <HasRelation name="go3" source="fruitninja.MediumLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="fruitninja.HardLevel" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.SuperFruit2" target="fruitninja.Fruit"/>
+    <HasRelation name="originator" source="fruitninja.MediumLevel" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="command.LoadCommand" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go1" source="fruitninja.MediumLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.Factory" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.TheActions" target="fruitninja.GameActions"/>
+    <HasRelation name="complete" source="fruitninja.Factory" target="fruitninja.Complete" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go" source="fruitninja.EasyLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="factory" source="fruitninja.Menu" target="fruitninja.Factory" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.Apple" target="fruitninja.Fruit"/>
+    <HasRelation name="momento" source="fruitninja.ArcadeMode" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.TheActions" target="fruitninja.Fruit" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="factory" source="fruitninja.ArcadeMode" target="fruitninja.Factory" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.GameActions" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="command.Invoker" target="command.Command" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go1" source="fruitninja.EasyLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go2" source="fruitninja.EasyLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="momento" source="Momento.Originator" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="complete" source="fruitninja.EasyLevel" target="fruitninja.Complete" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="am" source="fruitninja.Factory" target="fruitninja.ArcadeMode" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="control" source="fruitninja.Factory" target="command.Invoker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="fruitninja.ArcadeMode" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.GameActions" target="fruitninja.Fruit" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="complete" source="fruitninja.MediumLevel" target="fruitninja.Complete" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.RegularBomb" target="fruitninja.Bombs"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="command.LoadCommand" target="command.Command"/>
+    <UseRelation source="fruitninja.Factory" target="fruitninja.Level" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="menu" source="fruitninja.Factory" target="fruitninja.Menu" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="factory" source="fruitninja.MediumLevel" target="fruitninja.Factory" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go" source="fruitninja.MediumLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.Background" target="fruitninja.Background" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.TheActions" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="momento" source="fruitninja.EasyLevel" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="fruitninja.FruitNinja" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="actions" source="fruitninja.HardLevel" target="fruitninja.GameActions" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="careTaker" source="command.SaveCommand" target="Momento.CareTaker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="el" source="fruitninja.Factory" target="fruitninja.EasyLevel" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="careTaker" source="fruitninja.MediumLevel" target="Momento.CareTaker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.Factory" target="Momento.CareTaker" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="fruitninja.RedBomb" target="fruitninja.Bombs"/>
+    <HasRelation name="go1" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go2" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go3" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go4" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go5" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="factory" source="fruitninja.EasyLevel" target="fruitninja.Factory" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="careTaker" source="fruitninja.ArcadeMode" target="Momento.CareTaker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="Momento.CareTaker" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.EasyLevel" target="fruitninja.Level"/>
+    <IsRelation name="is" source="fruitninja.Melon" target="fruitninja.Fruit"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.Bombs" target="fruitninja.GameObject"/>
+    <HasRelation name="warnning" source="fruitninja.Factory" target="fruitninja.Warnning" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ml" source="fruitninja.Factory" target="fruitninja.MediumLevel" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.MediumLevel" target="fruitninja.Level"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.Fruit" target="fruitninja.GameObject"/>
+    <HasRelation name="factory" source="fruitninja.HardLevel" target="fruitninja.Factory" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="momento" source="fruitninja.HardLevel" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.EasyLevel" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="actions" source="fruitninja.MediumLevel" target="fruitninja.GameActions" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go" source="fruitninja.ArcadeMode" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="careTaker" source="fruitninja.EasyLevel" target="Momento.CareTaker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="command.SaveCommand" target="command.Command"/>
+    <HasRelation name="command" source="command.Invoker" target="command.Command" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="careTaker" source="fruitninja.HardLevel" target="Momento.CareTaker" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="momento" source="Momento.CareTaker" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="actions" source="fruitninja.EasyLevel" target="fruitninja.GameActions" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go2" source="fruitninja.HardLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.ArcadeMode" target="fruitninja.Level"/>
+    <HasRelation name="go1" source="fruitninja.HardLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go4" source="fruitninja.HardLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="go3" source="fruitninja.HardLevel" target="fruitninja.GameObject" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="hl" source="fruitninja.Factory" target="fruitninja.HardLevel" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.Factory" target="fruitninja.Fruit" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="momento" source="fruitninja.MediumLevel" target="Momento.Momento" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="fruitninja.MediumLevel" target="fruitninja.GameObject" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="instance" source="fruitninja.Background" target="fruitninja.Background" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="complete" source="fruitninja.ArcadeMode" target="fruitninja.Complete" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="originator" source="fruitninja.EasyLevel" target="Momento.Originator" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="bg" source="fruitninja.Factory" target="fruitninja.Background" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="fruitninja.HardLevel" target="fruitninja.Level"/>
+    <IsRelation name="is" source="fruitninja.PowerFruit" target="fruitninja.Fruit"/>
+    <HasRelation name="complete" source="fruitninja.HardLevel" target="fruitninja.Complete" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
